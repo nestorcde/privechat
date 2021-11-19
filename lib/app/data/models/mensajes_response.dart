@@ -2,7 +2,6 @@
 //
 //     final mensajesResponse = mensajesResponseFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 MensajesResponse mensajesResponseFromJson(String str) => MensajesResponse.fromJson(json.decode(str));

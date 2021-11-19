@@ -17,13 +17,13 @@ class CustomLogo extends StatelessWidget {
     return Center(
       child: Container(
         width: 170,
-        margin: EdgeInsets.only(top: 50),
+        margin: const EdgeInsets.only(top: 50),
         child: Column(
           // ignore: prefer_const_literals_to_create_immutables
           children: [
             Image(image: AssetImage(imagePath)),
-            SizedBox(height: 20,),
-            Text(textLabel, style: TextStyle(fontSize: 30))
+            const SizedBox(height: 20,),
+            Text(textLabel, style: const TextStyle(fontSize: 30))
           ],
         ),
       ),

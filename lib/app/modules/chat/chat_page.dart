@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:privechat/app/data/models/mensajes_response.dart';
 
 import 'package:privechat/app/modules/chat/chat_controller.dart';
 import 'package:privechat/app/ui/widgets/chat_message.dart';
@@ -26,9 +27,8 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
   ChatController? chatController;
 
-  List<ChatMessage> _messages = [];
+  final List<ChatMessage> _messages = [];
 
-  bool _estaEscribiendo = false;
 
   @override
   void initState() {
@@ -38,21 +38,23 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
     // this.socketService.socket.on('mensaje-personal', _escucharMensaje);
     chatController = Get.find<ChatController>();
-    chatController!.getchat();
+    //chatController!.getchat();
     chatController!.socket.on('mensaje-personal', _escucharMensaje);
     _cargarHistorial(chatController!.usuario.uid);
     super.initState();
   }
 
   void _cargarHistorial(String? usuarioId) async {
-    await chatController!.getchat;
-    List chat = [];
+    await chatController!.getchat();
+    List<Mensaje> chat = <Mensaje>[];
     _messages.clear();
     chat = chatController!.chatList;
     
     final history = chat.map((m) => new ChatMessage(
         texto: m.mensaje,
         uid: m.de,
+        status: m.estado.obs,
+        msgUid: m.uid,
         animationController: new AnimationController(
             vsync: this, duration: const Duration(milliseconds: 0))
           ..forward()));
@@ -65,6 +67,8 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     ChatMessage message = new ChatMessage(
         texto: payload['mensaje'],
         uid: payload['de'],
+        msgUid: payload['uid'],
+        status: payload['estado'],
         animationController: AnimationController(
             vsync: this, duration: const Duration(milliseconds: 300)));
 
@@ -152,7 +156,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                 margin: const EdgeInsets.symmetric(horizontal: 4.0),
                 child: Platform.isIOS
                     ? CupertinoButton(
-                      child: Text('Enviar'), 
+                      child: const Text('Enviar'), 
                       onPressed: () {_handleSubmit(_textController.text.trim());}
                     )
                     : Container(
@@ -177,6 +181,8 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     final newMessage = new ChatMessage(
       texto: texto,
       uid: chatController!.usuario.uid!,
+      msgUid: '',
+      status: 0.obs,
       animationController: AnimationController(
           vsync: this, duration: const Duration(milliseconds: 200)),
     );
@@ -184,7 +190,6 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     newMessage.animationController.forward();
 
     setState(() {
-      _estaEscribiendo = false;
     });
 
     chatController!.emit('mensaje-personal', {
@@ -196,7 +201,6 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    // TODO: Off del socket
     for (ChatMessage message in _messages) {
       message.animationController.dispose();
     }

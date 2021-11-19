@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:get/get.dart';
-import 'package:privechat/app/modules/loading/loading_controller.dart';
 import 'package:privechat/app/modules/login/login_controller.dart';
 import 'package:privechat/app/ui/widgets/boton_azul.dart';
 import 'package:privechat/app/ui/widgets/custom_input.dart';
@@ -16,7 +15,6 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<LoginController>(builder: (_) {
-      final loadingCtrl = Get.find<LoadingController>();
       return Scaffold(
           backgroundColor: Color(0xffF2F2F2),
           body: SafeArea(
@@ -63,7 +61,7 @@ class Form extends StatefulWidget {
   //final LoadingController loadingCtrl;
   //late bool? autenticado;
   final LoginController loginCtrl;
-  Form(
+  const Form(
       {Key? key,
       //required this.loadingCtrl,
       //this.autenticado,
@@ -75,8 +73,8 @@ class Form extends StatefulWidget {
 }
 
 class _FormState extends State<Form> {
-  final emailController = new TextEditingController();
-  final passwordController = new TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
   @override
   // TODO: implement widget
   Form get widget => super.widget;
@@ -125,13 +123,13 @@ class _FormState extends State<Form> {
   }
 
   bool verificado() {
-    if (emailController.text == '' || passwordController.text == '')
+    if (emailController.text == '' || passwordController.text == '') {
       return false;
+    }
 
     return true;
   }
 
-  void _imprimir() {}
 
   // Future<void> _recLogged() async {
   //   widget.autenticado = await widget.loadingCtrl.isLoggedIn();

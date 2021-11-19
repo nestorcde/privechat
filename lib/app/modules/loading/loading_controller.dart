@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:privechat/app/data/repository/remote/auth_repository.dart';
 import 'package:privechat/app/data/repository/remote/socket_repository.dart';

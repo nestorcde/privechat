@@ -27,12 +27,12 @@ abstract class AppPages {
     ),
     GetPage(
       name: Routes.REGISTER, 
-      page:()=> RegisterPage(), 
+      page:()=> const RegisterPage(), 
       binding: RegisterBinding()
     ),
     GetPage(
       name: Routes.LOADING, 
-      page:()=> LoadingPage(), 
+      page:()=> const LoadingPage(), 
       binding: LoadingBinding()
     ),
     GetPage(

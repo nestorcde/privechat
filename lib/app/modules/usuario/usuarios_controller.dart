@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:privechat/app/data/models/usuario_model.dart';
 import 'package:privechat/app/data/repository/local/local_auth_repository.dart';
@@ -36,9 +35,6 @@ class UsuarioController extends GetxController {
     );
   }
   
-  void connect()async{
-    _socketRepository.connect();
-  }
 
   void disconnect(){
     _socketRepository.disconnect();

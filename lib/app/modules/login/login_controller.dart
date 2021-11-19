@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -39,9 +38,9 @@ class LoginController extends GetxController {
           autenticando.value = false;
           Get.dialog(
              AlertDialog(
-              title: Text('Login Incorrecto'),
-              content: Text('Usuario o Contraseña incorrectas'),
-              actions: [TextButton(onPressed: Get.back, child: Text('OK'))],
+              title: const Text('Login Incorrecto'),
+              content: const Text('Usuario o Contraseña incorrectas'),
+              actions: [TextButton(onPressed: Get.back, child: const Text('OK'))],
             )
           );
         }
@@ -50,9 +49,9 @@ class LoginController extends GetxController {
           autenticando.value = false;
           Get.dialog(
              AlertDialog(
-              title: Text('Login Incorrecto'),
+              title: const Text('Login Incorrecto'),
               content: Text('Error de Red: ${e.message}'),
-              actions: [TextButton(onPressed: Get.back, child: Text('OK'))],
+              actions: [TextButton(onPressed: Get.back, child: const Text('OK'))],
             )
           );
       } on Exception catch(er){
@@ -60,9 +59,9 @@ class LoginController extends GetxController {
           autenticando.value = false;
           Get.dialog(
              AlertDialog(
-              title: Text('Login Incorrecto'),
+              title: const Text('Login Incorrecto'),
               content: Text('Error de Red: ${er.toString()}'),
-              actions: [TextButton(onPressed: Get.back, child: Text('OK'))],
+              actions: [TextButton(onPressed: Get.back, child: const Text('OK'))],
             )
           );
       }
@@ -70,9 +69,9 @@ class LoginController extends GetxController {
         autenticando.value = false;
         Get.dialog(
            AlertDialog(
-            title: Text('Login Incorrecto'),
-            content: Text('email y password obligatorios'),
-              actions: [TextButton(onPressed: Get.back, child: Text('OK'))],
+            title: const Text('Login Incorrecto'),
+            content: const Text('email y password obligatorios'),
+              actions: [TextButton(onPressed: Get.back, child: const Text('OK'))],
           )
         );
     }

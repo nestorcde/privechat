@@ -27,7 +27,7 @@ class ChatController extends GetxController {
     _usuario = usuario;
   }
 
-  var chatList = [] ;
+  var chatList = <Mensaje>[] ;
 
   Future<void> getchat() async {
     chatList = await repository.getChat(usuarioPara.uid!);
@@ -35,7 +35,7 @@ class ChatController extends GetxController {
   }
 
   _init() async{
-    await getchat();
+    //await getchat();
   }
 
   @override

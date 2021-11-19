@@ -2,7 +2,6 @@
 //
 //     final usuarioResponse = usuarioResponseFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 import 'package:privechat/app/data/models/usuario_model.dart';

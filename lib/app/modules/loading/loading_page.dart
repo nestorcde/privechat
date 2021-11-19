@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:privechat/app/modules/loading/loading_controller.dart';
 
 class LoadingPage extends StatelessWidget {
-  LoadingPage({Key? key}) : super(key: key);
-  final LoadingController loadingCtrl = Get.find<LoadingController>();
+  const LoadingPage({Key? key}) : super(key: key);
+  //final LoadingController loadingCtrl = Get.find<LoadingController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -18,7 +18,7 @@ class UsuariosPage extends StatefulWidget {
 class _UsuariosPageState extends State<UsuariosPage> {
   // final usuarioService = new UsuarioService();
 
-  RefreshController _refreshController =
+  final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   late SocketProvider _socketProvider;
   late ChatController _chatController;
@@ -49,7 +49,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
             appBar: AppBar(
               title: Text(
                 _.usuario.nombre!,
-                style: TextStyle(color: Colors.black87),
+                style: const TextStyle(color: Colors.black87),
               ),
               centerTitle: true,
               elevation: 1,
@@ -136,15 +136,11 @@ class _UsuariosPageState extends State<UsuariosPage> {
       onTap: () async {
         // final chatService = Provider.of<ChatService>(context, listen: false);
         _chatController.usuarioPara = usuario;
-        await _chatController.getchat();
+        //await _chatController.getchat();
         Get.toNamed(Routes.CHAT);
         //Navigator.pushNamed(context, 'chat');
       },
     );
   }
 
-  _cargarUsuarios(UsuarioController usuarioController) {
-    usuarioController.cargarUsuarios();
-    _refreshController.refreshCompleted();
-  }
 }

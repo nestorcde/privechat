@@ -9,10 +9,10 @@ import 'package:privechat/app/ui/widgets/boton_azul.dart';
 import 'package:privechat/app/ui/widgets/custom_input.dart';
 import 'package:privechat/app/ui/widgets/custom_logo.dart';
 import 'package:privechat/app/ui/widgets/label.dart';
-import 'package:privechat/app/ui/widgets/mostrar_alerta.dart';
-import 'package:provider/provider.dart';
 
 class RegisterPage extends StatelessWidget {
+  const RegisterPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<RegisterController>(builder: (_) {
@@ -22,7 +22,7 @@ class RegisterPage extends StatelessWidget {
           body: SafeArea(
             child: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
-              child: Container(
+              child: SizedBox(
                 height: MediaQuery.of(context).size.height * 0.9,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,7 +57,7 @@ class _Form extends StatefulWidget {
   final LoadingController loadingCtrl;
   final RegisterController registerCtrl;
   //late bool? autenticado;
-   _Form({Key? key, required this.loadingCtrl, required this.registerCtrl, /*this.autenticado*/})
+   const _Form({Key? key, required this.loadingCtrl, required this.registerCtrl, /*this.autenticado*/})
       : super(key: key);
 
   @override
@@ -65,9 +65,9 @@ class _Form extends StatefulWidget {
 }
 
 class __FormState extends State<_Form> {
-  final nombreController = new TextEditingController();
-  final emailController = new TextEditingController();
-  final passwordController = new TextEditingController();
+  final nombreController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   // TODO: implement widget
@@ -121,10 +121,6 @@ class __FormState extends State<_Form> {
     );
   }
 
-  void _imprimir() {
-    print('Email: ${emailController.text}');
-    print('Pass: ${passwordController.text}');
-  }
 
   Future<void> _recLoged() async {
     //widget.autenticado = await widget.loadingCtrl.isLoggedIn();
