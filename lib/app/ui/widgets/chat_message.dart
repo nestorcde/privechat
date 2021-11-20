@@ -2,28 +2,58 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
-import 'package:privechat/app/modules/chat/chat_controller.dart';
-import 'package:privechat/app/utils/constants.dart';
-import 'package:privechat/app/utils/mensajes_status.dart';
 
-class ChatMessage extends GetView<ChatController> {
+import 'package:privechat/app/modules/chat/chat_controller.dart';
+import 'package:privechat/app/ui/widgets/mensajes_status.dart';
+
+class ChatMessage extends StatefulWidget {
+
+
+
   final String texto;
   final String uid;
-  final String msgUid;
+  final String? msgUid;
   late Rx<int> status = 0.obs;
   final AnimationController animationController;
   ChatMessage(
       {Key? key,
       required this.texto,
       required this.uid,
-      required this.msgUid,
+      this.msgUid,
       required this.status,
       required this.animationController})
       : super(key: key);
-
     setStatus(int value){
       status.value = value;
     }
+
+  @override
+  State<ChatMessage> createState() => _ChatMessageState();
+}
+
+class _ChatMessageState extends State<ChatMessage> with TickerProviderStateMixin{
+
+  late ChatController chatController;
+  
+
+  void _mensajeLeido(dynamic data) {
+    //print(data);
+    if (widget.msgUid == data['uid'] && chatController.usuario.uid == data['paraUid']) {
+      //setState(() {
+        widget.setStatus(1);
+      //});
+    }
+  }
+
+  @override
+  void initState() {
+    chatController = Get.find<ChatController>();
+    chatController.socket.on('mensaje-leido', _mensajeLeido);
+    super.initState();
+    
+  }
+
+    
 
   @override
   Widget build(BuildContext context) {
@@ -32,16 +62,16 @@ class ChatMessage extends GetView<ChatController> {
     
     return GetBuilder<ChatController>(
       builder: (_) {
-        _.socket.on('mensaje-leido', _mensajeLeido);
+        
         return FadeTransition(
-          opacity: animationController,
+          opacity: widget.animationController,
           child: SizeTransition(
             sizeFactor: CurvedAnimation(
-                parent: animationController, curve: Curves.easeOut),
+                parent: widget.animationController, curve: Curves.easeOut),
             child: Container(
-              child: uid ==
+              child: widget.uid ==
                       _.usuario.uid // 1==1//this.uid == authService.usuario.uid
-                  ? _miMessage()
+                  ? Obx(() =>_miMessage())
                   : notMyMessage(_),
             ),
           ),
@@ -50,12 +80,7 @@ class ChatMessage extends GetView<ChatController> {
     );
   }
 
-  void _mensajeLeido(dynamic data) {
-    print(data);
-    if (uid == data['uid']) {
-      status.value = MensajeStatus.leido;
-    }
-  }
+  
 
   Widget _miMessage() {
     return Align(
@@ -68,16 +93,14 @@ class ChatMessage extends GetView<ChatController> {
             Flexible(
                 flex: 1,
                 child: Text(
-                  texto,
+                  widget.texto,
                   style: const TextStyle(color: Colors.white),
                   softWrap: true,
                 )),
             const SizedBox(
               width: 5,
             ),
-            Obx(() => MessageStatusDot(
-                  status: status.value,
-                ))
+             MessageStatusDot(status: widget.status.value,)
           ],
         ),
         padding: const EdgeInsets.all(8),
@@ -90,11 +113,11 @@ class ChatMessage extends GetView<ChatController> {
   }
 
   Widget notMyMessage(ChatController chatController) {
-    chatController.socket.emit('mensaje-leido', {"uid": msgUid, "deUid": uid});
+    chatController.socket.emit('mensaje-leido', {"uid": widget.msgUid, "deUid": widget.uid, "paraUid": chatController.usuario.uid});
     return Align(
       child: Container(
         child: Text(
-          texto,
+          widget.texto,
           style: const TextStyle(color: Colors.white),
         ),
         padding: const EdgeInsets.all(8),
@@ -104,5 +127,11 @@ class ChatMessage extends GetView<ChatController> {
       ),
       alignment: Alignment.centerLeft,
     );
+  }
+
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    throw UnimplementedError();
   }
 }

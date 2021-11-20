@@ -24,7 +24,7 @@ class ChatProvider extends GetConnect {
         }
       );
 
-      print(resp.body);
+      //print(resp.body);
       final mensajesResponse = mensajesResponseFromJson(resp.body);
       return mensajesResponse.mensajes;
     } catch (e) {

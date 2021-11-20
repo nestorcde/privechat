@@ -25,7 +25,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   // late SocketService socketService;
   // late AuthService authService;
 
-  ChatController? chatController;
+  late ChatController chatController;
 
   final List<ChatMessage> _messages = [];
 
@@ -39,16 +39,16 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     // this.socketService.socket.on('mensaje-personal', _escucharMensaje);
     chatController = Get.find<ChatController>();
     //chatController!.getchat();
-    chatController!.socket.on('mensaje-personal', _escucharMensaje);
-    _cargarHistorial(chatController!.usuario.uid);
+    chatController.socket.on('mensaje-personal',(value) => _escucharMensaje(Mensaje.fromJson(value)));
+    _cargarHistorial(chatController.usuario.uid);
     super.initState();
   }
 
   void _cargarHistorial(String? usuarioId) async {
-    await chatController!.getchat();
+    await chatController.getchat();
     List<Mensaje> chat = <Mensaje>[];
     _messages.clear();
-    chat = chatController!.chatList;
+    chat = chatController.chatList.value;
     
     final history = chat.map((m) => new ChatMessage(
         texto: m.mensaje,
@@ -63,12 +63,13 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     });
   }
 
-  void _escucharMensaje(dynamic payload) {
+  void _escucharMensaje(Mensaje payload) {
+    chatController.socket.emit('mensaje-leido', {"uid": payload.uid, "deUid": payload.de});
     ChatMessage message = new ChatMessage(
-        texto: payload['mensaje'],
-        uid: payload['de'],
-        msgUid: payload['uid'],
-        status: payload['estado'],
+        texto: payload.mensaje,
+        uid: payload.de,
+        msgUid: payload.uid,
+        status: payload.estado.obs,
         animationController: AnimationController(
             vsync: this, duration: const Duration(milliseconds: 300)));
 
@@ -180,21 +181,21 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
     final newMessage = new ChatMessage(
       texto: texto,
-      uid: chatController!.usuario.uid!,
+      uid: chatController.usuario.uid!,
       msgUid: '',
       status: 0.obs,
       animationController: AnimationController(
           vsync: this, duration: const Duration(milliseconds: 200)),
     );
-    _messages.insert(0, newMessage);
-    newMessage.animationController.forward();
+    //_messages.insert(0, newMessage);
+    //newMessage.animationController.forward();
 
-    setState(() {
-    });
+    // setState(() {
+    // });
 
-    chatController!.emit('mensaje-personal', {
-      'de': chatController!.usuario.uid,
-      'para': chatController!.usuarioPara.uid,
+    chatController.emit('mensaje-personal', {
+      'de': chatController.usuario.uid,
+      'para': chatController.usuarioPara.uid,
       'mensaje': texto
     });
   }
@@ -204,7 +205,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     for (ChatMessage message in _messages) {
       message.animationController.dispose();
     }
-    chatController!.socket.off('mensaje-personal');
+    chatController.socket.off('mensaje-personal');
     super.dispose();
   }
 }
