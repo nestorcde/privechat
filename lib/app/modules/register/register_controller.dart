@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
 
 import 'package:privechat/app/data/repository/remote/auth_repository.dart';
+import 'package:privechat/app/data/repository/remote/socket_repository.dart';
 import 'package:privechat/app/routes/routes_app.dart';
 
 class RegisterController extends GetxController {
 
   final authRepository = Get.find<AuthRepository>();
+  final SocketRepository _socketRepository = Get.find<SocketRepository>();
 
   RxBool autenticando = false.obs;
   RxString nombre = ''.obs, email = ''.obs, password = ''.obs;
@@ -27,7 +29,7 @@ class RegisterController extends GetxController {
 
     if(registroOk == true){
       Get.offNamed(Routes.USUARIO);
-      //socketService.connect();
+      _socketRepository.connect();
     }else{
       Get.snackbar('Registro Incorrecto', registroOk);
       //mostrarAlerta(context, 'Registro incorrecto', registroOk);

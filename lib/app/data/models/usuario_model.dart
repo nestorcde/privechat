@@ -1,11 +1,11 @@
 class Usuario {
-  bool? online;
+  bool online;
   String? email;
   String? nombre;
   String? uid;
 
   Usuario({
-    this.online,
+    required this.online,
     this.email,
     this.nombre,
     this.uid

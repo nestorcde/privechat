@@ -38,10 +38,10 @@ class _ChatMessageState extends State<ChatMessage> with TickerProviderStateMixin
 
   void _mensajeLeido(dynamic data) {
     //print(data);
-    if (widget.msgUid == data['uid'] && chatController.usuario.uid == data['paraUid']) {
-      //setState(() {
+    if (widget.msgUid == data['uid'] && chatController.usuario.uid != data['paraUid']) {
+      if(widget.status.value == 0){
         widget.setStatus(1);
-      //});
+      }
     }
   }
 
@@ -113,7 +113,7 @@ class _ChatMessageState extends State<ChatMessage> with TickerProviderStateMixin
   }
 
   Widget notMyMessage(ChatController chatController) {
-    chatController.socket.emit('mensaje-leido', {"uid": widget.msgUid, "deUid": widget.uid, "paraUid": chatController.usuario.uid});
+    chatController.socket.emit('mensaje-leido-sale', {"uid": widget.msgUid, "deUid": widget.uid, "paraUid": chatController.usuario.uid});
     return Align(
       child: Container(
         child: Text(

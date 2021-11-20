@@ -26,7 +26,7 @@ class LoginPage extends StatelessWidget {
                 },
                 child: Container(
                   color: Colors.transparent,
-                  height: MediaQuery.of(context).size.height * 0.9,
+                  height: Get.size.height * 0.9,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -45,7 +45,7 @@ class LoginPage extends StatelessWidget {
                           'Terminos y Condiciones',
                           style: TextStyle(fontWeight: FontWeight.w200),
                         ),
-                        margin: EdgeInsets.only(bottom: 30),
+                        margin: EdgeInsets.only(bottom: 10),
                       )
                     ],
                   ),
@@ -85,7 +85,7 @@ class _FormState extends State<Form> {
     // final socketService = Provider.of<SocketService>(context);
     //_recLogged();
     return Container(
-      margin: EdgeInsets.only(top: 40),
+      //margin: EdgeInsets.only(top: 20),
       padding: EdgeInsets.symmetric(horizontal: 50),
       child: Column(
         children: [

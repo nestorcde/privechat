@@ -13,7 +13,7 @@ class ChatController extends GetxController {
   final AuthRepository authRepository = Get.find<AuthRepository>();
   final SocketRepository socketRepository = Get.find<SocketRepository>();
   
-  Usuario _usuario = Usuario();
+  Rx<Usuario> usuariopara = Usuario(online: false).obs;
 
   Usuario get usuario => authRepository.usuario;
   
@@ -21,10 +21,17 @@ class ChatController extends GetxController {
 
   Function get emit => socketRepository.emit;
   
-  Usuario get usuarioPara => _usuario;
+  Usuario get usuarioPara => usuariopara.value;
 
   set usuarioPara(Usuario usuario){
-    _usuario = usuario;
+    usuariopara.value = usuario;
+  }
+
+  void actualizaEstado(data) {
+    if(usuariopara.value.uid == data['uid']) {
+      usuariopara.value.online = data['online'];
+      update();
+    }
   }
 
   var chatList = <Mensaje>[].obs ;

@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_new
 
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,6 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
   final List<ChatMessage> _messages = [];
 
-
   @override
   void initState() {
     // this.chatService = Provider.of<ChatService>(context, listen: false);
@@ -39,17 +39,21 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     // this.socketService.socket.on('mensaje-personal', _escucharMensaje);
     chatController = Get.find<ChatController>();
     //chatController!.getchat();
-    chatController.socket.on('mensaje-personal',(value) => _escucharMensaje(Mensaje.fromJson(value)));
+    chatController.socket.on('usuario-conectado-desconectado',chatController.actualizaEstado);
+    chatController.socket.on('mensaje-personal',
+        (value) => _escucharMensaje(Mensaje.fromJson(value)));
     _cargarHistorial(chatController.usuario.uid);
     super.initState();
   }
+
+  
 
   void _cargarHistorial(String? usuarioId) async {
     await chatController.getchat();
     List<Mensaje> chat = <Mensaje>[];
     _messages.clear();
     chat = chatController.chatList.value;
-    
+
     final history = chat.map((m) => new ChatMessage(
         texto: m.mensaje,
         uid: m.de,
@@ -64,7 +68,8 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   }
 
   void _escucharMensaje(Mensaje payload) {
-    chatController.socket.emit('mensaje-leido', {"uid": payload.uid, "deUid": payload.de});
+    chatController.socket
+        .emit('mensaje-leido', {"uid": payload.uid, "deUid": payload.de});
     ChatMessage message = new ChatMessage(
         texto: payload.mensaje,
         uid: payload.de,
@@ -82,57 +87,68 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    //final usuario = chatService.usuarioPara;
     return GetBuilder<ChatController>(
       builder: (_) {
         return Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            elevation: 1,
-            backgroundColor: Colors.white,
-            title: Column(
-              children: [
-                CircleAvatar(
-                  child: Text(
-                    _.usuarioPara.nombre!.substring(0, 2).toUpperCase(),
-                    style: const TextStyle(fontSize: 12),
+            appBar: AppBar(
+                centerTitle: false,
+                elevation: 1,
+                backgroundColor: Colors.white,
+                leading: Container(
+                  padding: const EdgeInsets.all(5),
+                  child: CircleAvatar(
+                    child: Text(
+                      _.usuarioPara.nombre!.substring(0, 2).toUpperCase(),
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    backgroundColor: Colors.blue[100],
                   ),
-                  backgroundColor: Colors.blue[100],
-                  maxRadius: 14,
                 ),
-                const SizedBox(
-                  height: 3,
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _.usuarioPara.nombre!,
+                      style: const TextStyle(
+                          color: Colors.black54,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Obx(() {
+
+                        return Text(
+                          _.usuariopara.value.online
+                              ? 'Conectado'
+                              : 'Desconectado',
+                          style: TextStyle(
+                              color: _.usuariopara.value.online
+                                  ? Colors.green
+                                  : Colors.red,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold),
+                        );}),
+                  ],
+                )),
+            body: Column(
+              children: [
+                Flexible(
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (_, i) => _messages[i],
+                    itemCount: _messages.length,
+                    reverse: true,
+                  ),
                 ),
-                Text(
-                  _.usuarioPara.nombre!,
-                  style: const TextStyle(
-                      color: Colors.black54,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold),
+                const Divider(
+                  height: 1,
+                ),
+                Container(
+                  color: Colors.white,
+                  child: _inputChat(),
                 )
               ],
-            ),
-          ),
-          body: Column(
-                children: [
-                  Flexible(
-                    child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (_, i) => _messages[i],
-                      itemCount: _messages.length,
-                      reverse: true,
-                    ),
-                  ),
-                  const Divider(
-                    height: 1,
-                  ),
-                  Container(
-                    color: Colors.white,
-                    child: _inputChat(),
-                  )
-                ],
-              )
-        );
+            ));
       },
     );
   }
@@ -157,17 +173,17 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                 margin: const EdgeInsets.symmetric(horizontal: 4.0),
                 child: Platform.isIOS
                     ? CupertinoButton(
-                      child: const Text('Enviar'), 
-                      onPressed: () {_handleSubmit(_textController.text.trim());}
-                    )
+                        child: const Text('Enviar'),
+                        onPressed: () {
+                          _handleSubmit(_textController.text.trim());
+                        })
                     : Container(
                         margin: const EdgeInsets.symmetric(horizontal: 4.0),
                         child: IconButton(
-                            onPressed: () {_handleSubmit(_textController.text.trim());}, 
-                            icon: const Icon(Icons.send)
-                        )
-                    )
-            ),
+                            onPressed: () {
+                              _handleSubmit(_textController.text.trim());
+                            },
+                            icon: const Icon(Icons.send)))),
           ],
         ),
       ),
@@ -208,4 +224,6 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     chatController.socket.off('mensaje-personal');
     super.dispose();
   }
+
+  
 }

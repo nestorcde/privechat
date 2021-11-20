@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 
 class BotonAzul extends StatelessWidget {
@@ -14,6 +15,7 @@ class BotonAzul extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = Get.size.height;
     return ElevatedButton(
             style: ElevatedButton.styleFrom(
               primary: Colors.blue,
@@ -28,12 +30,12 @@ class BotonAzul extends StatelessWidget {
                     texto,
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 18
+                      fontSize: 15
                     ),
                   )
               ),
               width: double.infinity,
-              height: 55,
+              height: height * 0.08,
             ));
   }
 }

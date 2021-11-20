@@ -44,7 +44,6 @@ class _UsuariosPageState extends State<UsuariosPage> {
       builder: (_) {
         
         _socketProvider = Get.find<SocketProvider>();
-        //_cargarUsuarios(_);
         return Scaffold(
             appBar: AppBar(
               title: Text(
@@ -56,9 +55,6 @@ class _UsuariosPageState extends State<UsuariosPage> {
               backgroundColor: Colors.white,
               leading: IconButton(
                   onPressed: () async {
-                    //desconectar del socket
-                    //Navigator.pushReplacementNamed(context, 'login');
-                    // AuthService.deleteToken();
                     _.disconnect();
                     await _.deleteToken();
                     Get.offNamed(Routes.LOGIN);
@@ -130,7 +126,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
         width: 10,
         height: 10,
         decoration: BoxDecoration(
-            color: usuario.online! ? Colors.green[300] : Colors.red,
+            color: usuario.online ? Colors.green[300] : Colors.red,
             borderRadius: BorderRadius.circular(100)),
       ),
       onTap: () async {
