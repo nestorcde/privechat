@@ -10,13 +10,10 @@ void main() {
   runApp(
     GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        //initialRoute: Routes.LOADING,
         theme: appThemeData,
         defaultTransition: Transition.fade,
-        //initialBinding: HomeBinding(),
         getPages: AppPages.pages,
         home: const LoadingPage(),
-        //initialBinding: LoadingBinding(),
         
     )
   );

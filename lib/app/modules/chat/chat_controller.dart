@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:privechat/app/data/models/mensajes_response.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -14,6 +16,12 @@ class ChatController extends GetxController {
   final SocketRepository socketRepository = Get.find<SocketRepository>();
   
   Rx<Usuario> usuariopara = Usuario(online: false).obs;
+
+  RxBool escribiendo = false.obs;
+
+  RxString texto = ''.obs;
+
+  Timer? _debounce;
 
   Usuario get usuario => authRepository.usuario;
   
@@ -42,7 +50,32 @@ class ChatController extends GetxController {
     update();
   }
 
+  void textChanged(String text) async{
+    socket.emit('escribiendo-sale', {"deUid": usuario.uid, "paraUid": usuariopara.value.uid});
+    //escribiendo.value = true;
+    // texto.value = text;
+    // if (_debounce?.isActive ?? false) _debounce!.cancel();
+    // _debounce = Timer(const Duration(milliseconds: 1000), () {
+    //     escribiendo.value = false;
+    // });
+  }
+
+  void estaEscribiendo(dynamic data){
+    if(usuariopara.value.uid==data['deUid']){
+      escribiendo.value = true;
+      update();
+      if (_debounce?.isActive ?? false) _debounce!.cancel();
+      _debounce = Timer(const Duration(milliseconds: 3000), () {
+          escribiendo.value = false;
+      });
+      update();
+    }
+  }
+
+  
+
   _init() async{
+    
     //await getchat();
   }
 

@@ -43,6 +43,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     chatController.socket.on('mensaje-personal',
         (value) => _escucharMensaje(Mensaje.fromJson(value)));
     _cargarHistorial(chatController.usuario.uid);
+    chatController.socket.on('escribiendo', chatController.estaEscribiendo);
     super.initState();
   }
 
@@ -68,8 +69,6 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   }
 
   void _escucharMensaje(Mensaje payload) {
-    chatController.socket
-        .emit('mensaje-leido', {"uid": payload.uid, "deUid": payload.de});
     ChatMessage message = new ChatMessage(
         texto: payload.mensaje,
         uid: payload.de,
@@ -118,11 +117,14 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                     Obx(() {
 
                         return Text(
-                          _.usuariopara.value.online
-                              ? 'Conectado'
-                              : 'Desconectado',
+                          _.escribiendo.value?
+                            'Escribiendo'
+                          :
+                            _.usuariopara.value.online
+                                ? 'Conectado'
+                                : 'Desconectado',
                           style: TextStyle(
-                              color: _.usuariopara.value.online
+                              color: _.usuariopara.value.online || _.escribiendo.value
                                   ? Colors.green
                                   : Colors.red,
                               fontSize: 10,
@@ -163,7 +165,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
               child: TextField(
                 controller: _textController,
                 onSubmitted: _handleSubmit,
-                onChanged: (String texto) {},
+                onChanged: chatController.textChanged,
                 decoration:
                     const InputDecoration.collapsed(hintText: "Enviar mensaje"),
                 focusNode: _focusNode,
