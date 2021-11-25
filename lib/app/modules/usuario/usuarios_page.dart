@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:privechat/app/data/models/usuario_model.dart';
@@ -122,19 +123,38 @@ class _UsuariosPageState extends State<UsuariosPage> {
         child: Text(usuario.nombre!.substring(0, 2).toUpperCase()),
         backgroundColor: Colors.blue[100],
       ),
-      trailing: Container(
-        width: 10,
-        height: 10,
-        decoration: BoxDecoration(
-            color: usuario.online ? Colors.green[300] : Colors.red,
-            borderRadius: BorderRadius.circular(100)),
-      ),
+      trailing: SizedBox(
+          width: 100,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Badge(
+                elevation: 0,
+                badgeColor: Colors.green,
+                shape: BadgeShape.circle,
+                padding: const EdgeInsets.all(7),
+                badgeContent: const Text(
+                  '10',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Container(
+                    width: 10,
+                    height: 10,
+                    decoration: BoxDecoration(
+                        color: usuario.online ? Colors.green[300] : Colors.red,
+                        borderRadius: BorderRadius.circular(100)),
+                  ),
+              ),
+            ],
+          ),
+        ),
+      // 
       onTap: () async {
-        // final chatService = Provider.of<ChatService>(context, listen: false);
         _chatController.usuarioPara = usuario;
-        //await _chatController.getchat();
         Get.toNamed(Routes.CHAT);
-        //Navigator.pushNamed(context, 'chat');
       },
     );
   }
