@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:privechat/app/data/models/usuario_model.dart';
 import 'package:privechat/app/data/provider/remote/socket_provider.dart';
 import 'package:privechat/app/modules/chat/chat_controller.dart';
+import 'package:privechat/app/modules/chat/chat_page.dart';
 import 'package:privechat/app/modules/usuario/usuarios_controller.dart';
 import 'package:privechat/app/routes/routes_app.dart';
 import 'package:privechat/app/utils/constants.dart';
@@ -128,16 +129,17 @@ class _UsuariosPageState extends State<UsuariosPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              Badge(
-                elevation: 0,
-                badgeColor: Colors.green,
-                shape: BadgeShape.circle,
-                padding: const EdgeInsets.all(7),
-                badgeContent: const Text(
-                  '10',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+              usuario.noLeidos!>0?
+                Badge(
+                  elevation: 0,
+                  badgeColor: Colors.grey,
+                  shape: BadgeShape.circle,
+                  padding: const EdgeInsets.all(7),
+                  badgeContent: Text(
+                    usuario.noLeidos!.toString(),
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ): const SizedBox(),
               Padding(
                 padding: const EdgeInsets.only(left: 20),
                 child: Container(

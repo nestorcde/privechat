@@ -17,7 +17,7 @@ abstract class AppPages {
   static final pages = [
     GetPage(
       name: Routes.CHAT, 
-      page:()=> const ChatPage(), 
+      page:()=>  ChatPage(), 
       binding: ChatBinding()
     ),
     GetPage(

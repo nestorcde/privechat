@@ -1,6 +1,5 @@
 // ignore_for_file: unnecessary_new
 
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,7 @@ import 'package:privechat/app/modules/chat/chat_controller.dart';
 import 'package:privechat/app/ui/widgets/chat_message.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({Key? key}) : super(key: key);
+   ChatPage({Key? key}) : super(key: key);
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -22,23 +21,13 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   final _textController = new TextEditingController();
   final _focusNode = new FocusNode();
 
-  // late ChatService chatService;
-  // late SocketService socketService;
-  // late AuthService authService;
-
   late ChatController chatController;
 
   final List<ChatMessage> _messages = [];
 
   @override
   void initState() {
-    // this.chatService = Provider.of<ChatService>(context, listen: false);
-    // this.socketService = Provider.of<SocketService>(context, listen: false);
-    // this.authService = Provider.of<AuthService>(context, listen: false);
-
-    // this.socketService.socket.on('mensaje-personal', _escucharMensaje);
     chatController = Get.find<ChatController>();
-    //chatController!.getchat();
     chatController.socket.on('usuario-conectado-desconectado',chatController.actualizaEstado);
     chatController.socket.on('mensaje-personal',
         (value) => _escucharMensaje(Mensaje.fromJson(value)));
@@ -93,19 +82,39 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                 centerTitle: false,
                 elevation: 1,
                 backgroundColor: Colors.white,
-                leading: Container(
-                  padding: const EdgeInsets.all(5),
-                  child: CircleAvatar(
-                    child: Text(
-                      _.usuarioPara.nombre!.substring(0, 2).toUpperCase(),
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
+                leadingWidth: 75,
+                leading: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                      child: IconButton(
+                        onPressed:Get.back, 
+                        icon: const Icon(
+                          Icons.arrow_back, 
+                          color: Colors.black54,
+                          //size: 20,
+                        )
+                        ),
+                      flex: 1,
+                      ),
+                      
+                    Flexible(
+                      flex: 2,
+                      child: CircleAvatar(
+                        child: Text(
+                          _.usuarioPara.nombre!.substring(0, 2).toUpperCase(),
+                          style: const TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        backgroundColor: Colors.blue[100],
+                      ),
                     ),
-                    backgroundColor: Colors.blue[100],
-                  ),
+                  ],
                 ),
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  
                   children: [
                     Text(
                       _.usuarioPara.nombre!,
