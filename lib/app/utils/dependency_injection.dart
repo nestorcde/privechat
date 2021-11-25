@@ -1,6 +1,7 @@
 //import 'dart:io';
 import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:http/http.dart';
 
 import 'package:privechat/app/data/provider/local/local_auth.dart';
@@ -9,6 +10,7 @@ import 'package:privechat/app/data/provider/remote/socket_provider.dart';
 import 'package:privechat/app/data/repository/local/local_auth_repository.dart';
 import 'package:privechat/app/data/repository/remote/auth_repository.dart';
 import 'package:privechat/app/data/repository/remote/socket_repository.dart';
+import 'package:privechat/app/modules/landing/landing_controller.dart';
 import 'package:privechat/app/modules/loading/loading_controller.dart';
 import 'package:privechat/app/modules/login/login_controller.dart';
 import 'package:privechat/app/modules/usuario/usuarios_provider.dart';
@@ -43,6 +45,7 @@ class DependencyInjection {
     Get.put<LoginController>(LoginController());
     Get.put<UsuarioController>(UsuarioController());
     Get.put<ChatController>(ChatController());
+    Get.put<LandingController>(LandingController());
 
   }
 }

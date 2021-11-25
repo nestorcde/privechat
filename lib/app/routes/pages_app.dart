@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
+import 'package:privechat/app/modules/agenda/agenda_page.dart';
 
 import 'package:privechat/app/modules/chat/chat_binding.dart';
 import 'package:privechat/app/modules/chat/chat_page.dart';
+import 'package:privechat/app/modules/landing/landing_page.dart';
 import 'package:privechat/app/modules/loading/loading_binding.dart';
 import 'package:privechat/app/modules/login/login_binding.dart';
 import 'package:privechat/app/modules/login/login_page.dart';
@@ -39,6 +41,14 @@ abstract class AppPages {
       name: Routes.USUARIO, 
       page:()=> const UsuariosPage(), 
       binding: UsuarioBinding()
+    ),
+    GetPage(
+      name: Routes.LANDING, 
+      page:()=> LandingPage(), 
+    ),
+    GetPage(
+      name: Routes.AGENDA, 
+      page:()=> const AgendaPage(), 
     ),
     
   ];
