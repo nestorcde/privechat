@@ -10,6 +10,9 @@ import 'package:privechat/app/data/provider/remote/socket_provider.dart';
 import 'package:privechat/app/data/repository/local/local_auth_repository.dart';
 import 'package:privechat/app/data/repository/remote/auth_repository.dart';
 import 'package:privechat/app/data/repository/remote/socket_repository.dart';
+import 'package:privechat/app/modules/agenda/agenda_controller.dart';
+import 'package:privechat/app/modules/agenda/agenda_provider.dart';
+import 'package:privechat/app/modules/agenda/agenda_repository.dart';
 import 'package:privechat/app/modules/landing/landing_controller.dart';
 import 'package:privechat/app/modules/loading/loading_controller.dart';
 import 'package:privechat/app/modules/login/login_controller.dart';
@@ -21,9 +24,9 @@ import 'package:privechat/app/modules/chat/chat_provider.dart';
 import 'package:privechat/app/modules/chat/chat_repository.dart';
 
 class DependencyInjection {
-  static void init(){
+  static Future<void> init() async{
     //Varios
-    Get.put<FlutterSecureStorage>(const FlutterSecureStorage());
+    Get.put<FlutterSecureStorage>(FlutterSecureStorage());
     Get.put<Client>(Client());
 
     //Providers
@@ -32,6 +35,7 @@ class DependencyInjection {
     Get.put<SocketProvider>(SocketProvider());
     Get.put<ChatProvider>(ChatProvider());
     Get.put<UsuarioProvider>(UsuarioProvider());
+    Get.put<AgendaProvider>(AgendaProvider());
     
     //Repositories
     Get.put<LocalAuthRepository>(LocalAuthRepository());
@@ -39,12 +43,14 @@ class DependencyInjection {
     Get.put<SocketRepository>(SocketRepository());
     Get.put<ChatRepository>(ChatRepository());
     Get.put<UsuarioRepository>(UsuarioRepository());
+    Get.put<AgendaRepository>(AgendaRepository());
 
     //Controllers
     Get.put<LoadingController>(LoadingController());
     Get.put<LoginController>(LoginController());
     Get.put<UsuarioController>(UsuarioController());
     Get.put<ChatController>(ChatController());
+    Get.put<AgendaController>(AgendaController());
     Get.put<LandingController>(LandingController());
 
   }

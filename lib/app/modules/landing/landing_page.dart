@@ -81,8 +81,7 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LandingController landingPageController =
-        Get.put(LandingController(), permanent: false);
+    final LandingController landingPageController = Get.find<LandingController>();
     return SafeArea(
         child: Scaffold(
       bottomNavigationBar:

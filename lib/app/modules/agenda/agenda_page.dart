@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:privechat/app/modules/agenda/agenda_controller.dart';
+import 'package:privechat/app/utils/constants.dart';
 import 'package:privechat/app/utils/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -22,10 +25,12 @@ class _AgendaPageState extends State<AgendaPage> {
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
+  late final AgendaController agendaController;
 
   @override
   void initState() {
     super.initState();
+    agendaController = Get.find<AgendaController>();
 
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
@@ -39,6 +44,7 @@ class _AgendaPageState extends State<AgendaPage> {
 
   List<Event> _getEventsForDay(DateTime day) {
     // Implementation example
+    //print(kEventSource);
     return kEvents[day] ?? [];
   }
 
@@ -122,11 +128,8 @@ class _AgendaPageState extends State<AgendaPage> {
           ),
           const SizedBox(height: 8.0),
           Expanded(
-            child: ValueListenableBuilder<List<Event>>(
-              valueListenable: _selectedEvents,
-              builder: (context, value, _) {
-                return ListView.builder(
-                  itemCount: value.length,
+            child:  ListView.builder(
+                  itemCount: horarios.length,
                   itemBuilder: (context, index) {
                     return Container(
                       margin: const EdgeInsets.symmetric(
@@ -138,12 +141,10 @@ class _AgendaPageState extends State<AgendaPage> {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: ListTile(
-                        onTap: () => print('${value[index]}'),
-                        title: Text('${value[index]}'),
+                        onTap: () => print('${horarios[index]}'),
+                        title: Text('${horarios[index]}'),
                       ),
                     );
-                  },
-                );
               },
             ),
           ),

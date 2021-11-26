@@ -28,7 +28,7 @@ class RegisterController extends GetxController {
     final registroOk = await authRepository.signIn(nombre.value.trim(), email.value.trim(), password.value.trim());
 
     if(registroOk == true){
-      Get.offNamed(Routes.USUARIO);
+      Get.offNamed(Routes.LANDING);
       _socketRepository.connect();
     }else{
       Get.snackbar('Registro Incorrecto', registroOk);

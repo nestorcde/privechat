@@ -5,8 +5,8 @@ import 'package:privechat/app/routes/pages_app.dart';
 import 'package:privechat/app/ui/theme/theme_app.dart';
 import 'package:privechat/app/utils/dependency_injection.dart';
 
-void main() {
-  DependencyInjection.init();
+void main()async {
+  await DependencyInjection.init();
   runApp(
     GetMaterialApp(
         debugShowCheckedModeBanner: false,

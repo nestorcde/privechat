@@ -21,3 +21,5 @@ class MensajeStatus {
   static const enviado = 0;
   static const leido = 1;
 }
+
+final horarios = ['08:00', '13:00', '15:00', '17:00', '19:00'];

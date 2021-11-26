@@ -33,7 +33,7 @@ class LoginController extends GetxController {
         if(loginOk.value){
           _socketRepository.connect();
           autenticando.value = false;
-          Get.offNamed(Routes.USUARIO);
+          Get.offNamed(Routes.LANDING);
         }else{
           autenticando.value = false;
           Get.dialog(
