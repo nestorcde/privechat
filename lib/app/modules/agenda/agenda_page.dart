@@ -180,9 +180,8 @@ class _AgendaPageState extends State<AgendaPage> {
                         vertical: 4.0,
                       ),
                       decoration: BoxDecoration(
-                          //border: Border.all(width: 0),
                           borderRadius: BorderRadius.circular(12.0),
-                          color: color,),//Colors.grey),
+                          color: color,),
                       child: ListTile(
                         onTap: () {
                           switch (estado) {
