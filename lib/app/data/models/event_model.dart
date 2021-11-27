@@ -1,27 +1,27 @@
-
-
-
 class Event {
     Event({
-         this.uid,
-         this.dia,
-         this.mes,
-         this.anho,
+        required this.id,
+        required this.uid,
+        required this.dia,
+        required this.mes,
+        required this.anho,
         required this.hora,
-         this.createdAt,
-         this.updatedAt,
+        required this.createdAt,
+        required this.updatedAt,
     });
 
-    String? uid;
-    int? dia;
-    int? mes;
-    int? anho;
+    String id;
+    Uid uid;
+    int dia;
+    int mes;
+    int anho;
     String hora;
-    DateTime? createdAt;
-    DateTime? updatedAt;
+    DateTime createdAt;
+    DateTime updatedAt;
 
     factory Event.fromJson(Map<String, dynamic> json) => Event(
-        uid: json["uid"],
+        id: json["_id"],
+        uid: Uid.fromJson(json["uid"]),
         dia: json["dia"],
         mes: json["mes"],
         anho: json["anho"],
@@ -31,12 +31,37 @@ class Event {
     );
 
     Map<String, dynamic> toJson() => {
-        "uid": uid,
+        "_id": id,
+        "uid": uid.toJson(),
         "dia": dia,
         "mes": mes,
         "anho": anho,
         "hora": hora,
-        "createdAt": createdAt!.toIso8601String(),
-        "updatedAt": updatedAt!.toIso8601String(),
+        "createdAt": createdAt.toIso8601String(),
+        "updatedAt": updatedAt.toIso8601String(),
+    };
+}
+
+class Uid {
+    Uid({
+        required this.id,
+        required this.nombre,
+        required this.email,
+    });
+
+    String id;
+    String nombre;
+    String email;
+
+    factory Uid.fromJson(Map<String, dynamic> json) => Uid(
+        id: json["_id"],
+        nombre: json["nombre"],
+        email: json["email"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "_id": id,
+        "nombre": nombre,
+        "email": email,
     };
 }

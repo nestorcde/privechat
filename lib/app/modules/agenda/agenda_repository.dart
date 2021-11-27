@@ -9,6 +9,10 @@ final AgendaProvider api = Get.find<AgendaProvider>();
 
 Future<Map<DateTime, List<Event>>> getTurnos() => api.getTurnos();
 
+Future<String> registrarTurnos(DateTime fecha, String hora)=>api.registrarTurno(fecha,hora);
+
+Future<String> eliminarTurnos(String id) => api.eliminarTurno(id);
+
 
 
 }

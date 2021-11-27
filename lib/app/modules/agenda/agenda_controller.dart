@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:privechat/app/data/models/event_model.dart';
+import 'package:privechat/app/data/models/usuario_model.dart';
+import 'package:privechat/app/data/repository/remote/auth_repository.dart';
 import 'package:privechat/app/utils/constants.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:collection';
@@ -10,71 +12,56 @@ class AgendaController extends GetxController {
 
   //final AgendaRepository repository = Get.find<AgendaRepository>();
   late final AgendaRepository repository;
+  
+  final AuthRepository authRepository = Get.find<AuthRepository>();
   RxList<Event> selectedEvents = <Event>[].obs;
 
   late Map<DateTime, List<Event>> kEventSource;
-  var  kEvents;
+  final Rx<LinkedHashMap<DateTime, List<Event>>>  kEvents = LinkedHashMap<DateTime, List<Event>>().obs;
   final DateTime kToday = DateTime.now();
   late DateTime kFirstDay;
   late DateTime kLastDay;
 
   Rx<DateTime> focusedDay = DateTime.now().obs;
+
+  Rx<DateTime> diaSeleccionado = DateTime.now().obs;
+
+  Usuario get usuario => authRepository.usuario;
   
-  void cargaEventos() async {
-    kEventSource = await repository.getTurnos();
-    kEvents = LinkedHashMap<DateTime, List<Event>>(
-    equals: isSameDay,
-    hashCode: getHashCode,
-    )..addAll(kEventSource);
-    print(kEventSource);
-    selectedEvents.value = kEvents[kToday];
-    update();
+  void cargaEventos()  {
+    repository.getTurnos().then((value){
+      kEventSource = value;
+      
+      kEvents.value = LinkedHashMap<DateTime, List<Event>>(
+      equals: isSameDay,
+      hashCode: getHashCode,
+      )..addAll(kEventSource);      
+      update();
+    });
+    
   }
   Future<Map<DateTime, List<Event>>> getTurnos() => repository.getTurnos();
 
+  void registrarTurno(DateTime fecha, String hora) async {
+     final respuesta = await repository.registrarTurnos(fecha, hora);
+     cargaEventos();
+     Get.snackbar('Registrar Turno', respuesta);
+  }
+
+  void eliminarTurno(String id) async {
+    final respuesta = await repository.eliminarTurnos(id);
+    cargaEventos();
+    Get.snackbar('Eliminar Turno', respuesta);
+  }
+
   @override
   void onInit() {
-    for (var element in horarios) {
-      selectedEvents.value.add(Event(hora: element));
-    }
+    repository = Get.find<AgendaRepository>();
 
-    kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
+    kFirstDay = DateTime(kToday.year, kToday.month, kToday.day);
     kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
     super.onInit();
   }
-
-  @override
-  void onReady() {
-    repository = Get.find<AgendaRepository>();
-    // repository.getTurnos().then((value) {
-    //   kEventSource = value;
-    //   kEvents = LinkedHashMap<DateTime, List<Event>>(
-    //   equals: isSameDay,
-    //   hashCode: getHashCode,
-    //   )..addAll(kEventSource);
-    // });
-
-    cargaEventos();
-
-
-    
-    // TODO: implement onReady
-    super.onReady();
-  }
-
-  // final kEvents = LinkedHashMap<DateTime, List<Event>>(
-  // equals: isSameDay,
-  // hashCode: getHashCode,
-  // )..addAll(kEventSource);
-
-  // final kEventSource = { for (var item in List.generate(50, (index) => index)) DateTime.utc(kFirstDay.year, kFirstDay.month, item * 5) : List.generate(
-  //       item % 4 + 1, (index) => Event('Event $item | ${index + 1}')) }
-  // ..addAll({
-  //   kToday: [
-  //     Event('Today\'s Event 1'),
-  //     Event('Today\'s Event 2'),
-  //   ],
-  // });
 
   int getHashCode(DateTime key) {
     return key.day * 1000000 + key.month * 10000 + key.year;

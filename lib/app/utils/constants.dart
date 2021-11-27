@@ -17,6 +17,12 @@ enum ServerStatus {
   Connecting
 }
 
+enum TurnoStatus {
+  Libre,
+  Ocupado,
+  Tuyo
+}
+
 class MensajeStatus {
   static const enviado = 0;
   static const leido = 1;
