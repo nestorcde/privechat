@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:privechat/app/data/models/login_response.dart';
 import 'package:privechat/app/data/models/usuario_model.dart';
-import 'package:privechat/app/globals/environments.dart';
+import 'package:privechat/app/utils/constants.dart';
 
 
 class AuthProvider extends GetConnect {

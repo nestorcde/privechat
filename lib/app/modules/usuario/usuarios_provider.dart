@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:privechat/app/data/models/usuario_model.dart';
 import 'package:privechat/app/data/models/usuarios_response.dart';
-import 'package:privechat/app/globals/environments.dart';
+import 'package:privechat/app/utils/constants.dart';
 
 
 //nossa classe responsável por encapsular os métodos http

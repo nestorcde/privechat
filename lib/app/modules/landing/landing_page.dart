@@ -12,7 +12,9 @@ class LandingPage extends StatelessWidget {
       fontSize: 12);
 
   final TextStyle selectedLabelStyle =
-      TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 12);
+      const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 12);
+
+   LandingPage({Key? key}) : super(key: key);
 
   buildBottomNavigationMenu(context, landingPageController) {
     return Obx(() => MediaQuery(
@@ -24,23 +26,12 @@ class LandingPage extends StatelessWidget {
             showSelectedLabels: true,
             onTap: landingPageController.changeTabIndex,
             currentIndex: landingPageController.tabIndex.value,
-            backgroundColor: Color.fromRGBO(36, 54, 101, 1.0),
+            backgroundColor: const Color.fromRGBO(36, 54, 101, 1.0),
             unselectedItemColor: Colors.white.withOpacity(0.5),
             selectedItemColor: Colors.white,
             unselectedLabelStyle: unselectedLabelStyle,
             selectedLabelStyle: selectedLabelStyle,
             items: [
-              BottomNavigationBarItem(
-                icon: Container(
-                  margin: EdgeInsets.only(bottom: 7),
-                  child: Icon(
-                    Icons.account_circle,
-                    size: 20.0,
-                  ),
-                ),
-                label: 'Usuarios',
-                backgroundColor: Color.fromRGBO(36, 54, 101, 1.0),
-              ),
               BottomNavigationBarItem(
                 icon: Container(
                   margin: const EdgeInsets.only(bottom: 7),
@@ -50,8 +41,20 @@ class LandingPage extends StatelessWidget {
                   ),
                 ),
                 label: 'Agenda',
-                backgroundColor: Color.fromRGBO(36, 54, 101, 1.0),
+                backgroundColor: const Color.fromRGBO(36, 54, 101, 1.0),
               ),
+              BottomNavigationBarItem(
+                icon: Container(
+                  margin: const EdgeInsets.only(bottom: 7),
+                  child: const Icon(
+                    Icons.account_circle,
+                    size: 20.0,
+                  ),
+                ),
+                label: 'Usuarios',
+                backgroundColor: const Color.fromRGBO(36, 54, 101, 1.0),
+              ),
+              
               // BottomNavigationBarItem(
               //   icon: Container(
               //     margin: const EdgeInsets.only(bottom: 7),
@@ -88,9 +91,9 @@ class LandingPage extends StatelessWidget {
           buildBottomNavigationMenu(context, landingPageController),
       body: Obx(() => IndexedStack(
             index: landingPageController.tabIndex.value,
-            children: [
-              const UsuariosPage(),
-              const AgendaPage()
+            children: const [
+              AgendaPage(),
+              UsuariosPage(),
             ],
           )),
     ));

@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:privechat/app/data/models/event_model.dart';
 import 'package:privechat/app/data/models/event_response.dart';
 import 'package:privechat/app/data/models/general_response.dart';
-import 'package:privechat/app/globals/environments.dart';
+import 'package:privechat/app/utils/constants.dart';
 
 
 //nossa classe responsável por encapsular os métodos http
@@ -74,6 +74,21 @@ class AgendaProvider {
       return respuesta.msg;
     } catch (e) {
       return 'Error al Eliminar';
+    }
+  }
+
+  Future<GeneralResponse> verificarTurno() async {
+    try {
+      final token = await _storage.read(key: 'token');
+      final resp = await http.get(Environment().apiUrl('/turnos/verificar'),
+        headers: {
+          'Content-Type': 'application/json',
+          'x-token': token.toString()
+        }
+      );
+      return generalResponseFromJson(resp.body);
+    } catch (e) {
+      return GeneralResponse(ok: false, msg: 'Error al verificar', conn: false, fecha: DateTime.now());
     }
   }
 }

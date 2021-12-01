@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:privechat/app/data/models/event_model.dart';
 import 'package:privechat/app/data/models/usuario_model.dart';
 import 'package:privechat/app/data/repository/remote/auth_repository.dart';
+import 'package:privechat/app/ui/widgets/dialogo_turno.dart';
 import 'package:privechat/app/utils/constants.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:collection';
@@ -22,9 +23,17 @@ class AgendaController extends GetxController {
   late DateTime kFirstDay;
   late DateTime kLastDay;
 
-  Rx<DateTime> focusedDay = DateTime.now().obs;
+  Rx<DateTime> diaEnfocado = DateTime.now().obs;
 
   Rx<DateTime> diaSeleccionado = DateTime.now().obs;
+
+  //var diaEnfocado;
+
+  void setDiaSeleccionado(DateTime nvoDia){
+    diaSeleccionado.value = nvoDia;
+    diaEnfocado.value = nvoDia;
+    update();
+  }
 
   Usuario get usuario => authRepository.usuario;
   
@@ -52,6 +61,22 @@ class AgendaController extends GetxController {
     final respuesta = await repository.eliminarTurnos(id);
     cargaEventos();
     Get.snackbar('Eliminar Turno', respuesta);
+  }
+
+  void verificarTurno(DateTime fecha, String hora) async {
+     final respuesta = await repository.verificarTurno();
+     if(respuesta.ok){
+       registrarTurno(fecha, hora);
+     }else{
+       if(respuesta.conn){
+          final dia = respuesta.fecha.day;
+          final mes = respuesta.fecha.month;
+          final anho = respuesta.fecha.year;
+          dialogoTurno(respuesta.msg, 'Tiene un turno en fecha $dia/${mes<10?'0'+mes.toString():mes}/$anho', true, 'Ir a Fecha', () => setDiaSeleccionado(respuesta.fecha));
+       }else{
+         Get.snackbar('Registrar Turno', respuesta.msg);
+       }
+     }
   }
 
   @override

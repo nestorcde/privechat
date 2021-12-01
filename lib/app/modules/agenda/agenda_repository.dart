@@ -1,6 +1,7 @@
 
 import 'package:get/get.dart';
 import 'package:privechat/app/data/models/event_model.dart';
+import 'package:privechat/app/data/models/general_response.dart';
 import 'package:privechat/app/modules/agenda/agenda_provider.dart';
 
 class AgendaRepository {
@@ -12,6 +13,8 @@ Future<Map<DateTime, List<Event>>> getTurnos() => api.getTurnos();
 Future<String> registrarTurnos(DateTime fecha, String hora)=>api.registrarTurno(fecha,hora);
 
 Future<String> eliminarTurnos(String id) => api.eliminarTurno(id);
+
+Future<GeneralResponse> verificarTurno() => api.verificarTurno();
 
 
 

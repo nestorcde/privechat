@@ -1,12 +1,14 @@
 // Copyright 2019 Aleksander Woźniak
 // SPDX-License-Identifier: Apache-2.0
 
+import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:privechat/app/data/models/event_model.dart';
 import 'package:privechat/app/data/models/usuario_model.dart';
 import 'package:privechat/app/modules/agenda/agenda_controller.dart';
 import 'package:privechat/app/ui/widgets/container_referencia.dart';
+import 'package:privechat/app/ui/widgets/custom_appbar.dart';
 import 'package:privechat/app/ui/widgets/dialogo_turno.dart';
 import 'package:privechat/app/utils/constants.dart';
 //import 'package:privechat/app/utils/utils.dart';
@@ -25,7 +27,7 @@ class _AgendaPageState extends State<AgendaPage> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
       .toggledOff; // Can be toggled on/off by longpressing a date
-  DateTime _focusedDay = DateTime.now();
+  //DateTime agendaController.diaEnfocado.value = DateTime.now();
  // DateTime? agendaController.diaSeleccionado.value;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
@@ -38,7 +40,7 @@ class _AgendaPageState extends State<AgendaPage> {
     agendaController = Get.find<AgendaController>();
     agendaController.cargaEventos();
 
-    agendaController.diaSeleccionado.value = _focusedDay;
+    agendaController.diaSeleccionado.value = agendaController.diaEnfocado.value;
     agendaController.selectedEvents.value = _getEventsForDay(agendaController.diaSeleccionado.value);
     usuario = agendaController.usuario;
   }
@@ -68,7 +70,7 @@ class _AgendaPageState extends State<AgendaPage> {
     if (!isSameDay(agendaController.diaSeleccionado.value, selectedDay)) {
       setState(() {
         agendaController.diaSeleccionado.value = selectedDay;
-        _focusedDay = focusedDay;
+        agendaController.diaEnfocado.value = focusedDay;
         _rangeStart = null; // Important to clean those
         _rangeEnd = null;
         _rangeSelectionMode = RangeSelectionMode.toggledOff;
@@ -81,7 +83,7 @@ class _AgendaPageState extends State<AgendaPage> {
   void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
     setState(() {
       agendaController.diaSeleccionado.value = focusedDay;
-      _focusedDay = focusedDay;
+      agendaController.diaEnfocado.value = focusedDay;
       _rangeStart = start;
       _rangeEnd = end;
       _rangeSelectionMode = RangeSelectionMode.toggledOn;
@@ -100,18 +102,17 @@ class _AgendaPageState extends State<AgendaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('TableCalendar - Events'),
-      ),
+      appBar: customAppBar('Agenda'),
       body: Column(
         children: [
           Obx(() {
             final eventos = agendaController.kEvents.value;
             //print(eventos);
             return TableCalendar<Event>(
+              locale: 'es-PY',
               firstDay: agendaController.kFirstDay,
               lastDay: agendaController.kLastDay,
-              focusedDay: _focusedDay,
+              focusedDay: agendaController.diaEnfocado.value,
               selectedDayPredicate: (day) => isSameDay(agendaController.diaSeleccionado.value, day),
               rangeStartDay: _rangeStart,
               rangeEndDay: _rangeEnd,
@@ -119,7 +120,7 @@ class _AgendaPageState extends State<AgendaPage> {
               rangeSelectionMode: _rangeSelectionMode,
               eventLoader: _getEventsForDay,
               startingDayOfWeek: StartingDayOfWeek.monday,
-              calendarStyle: CalendarStyle(
+              calendarStyle: const CalendarStyle(
                 // Use `CalendarStyle` to customize the UI
                 outsideDaysVisible: false,
               ),
@@ -133,8 +134,14 @@ class _AgendaPageState extends State<AgendaPage> {
                 }
               },
               onPageChanged: (focusedDay) {
-                _focusedDay = focusedDay;
+                agendaController.diaEnfocado.value = focusedDay;
               },
+              availableCalendarFormats: const {
+                CalendarFormat.month : 'Mensual', 
+                CalendarFormat.twoWeeks : '2 Semanas', 
+                CalendarFormat.week : 'Semana'
+              },
+              weekendDays: const [DateTime.sunday],
             );
           }),
           Padding(
@@ -205,7 +212,7 @@ class _AgendaPageState extends State<AgendaPage> {
                                 'Desea Registrar turno el $dia/${mes<10?'0'+mes.toString():mes}/$anho a las ${horarios[index]}?', 
                                 true, 
                                 'Registrar', 
-                                ()=>agendaController.registrarTurno(agendaController.diaSeleccionado.value, horarios[index]));
+                                ()=>agendaController.verificarTurno(agendaController.diaSeleccionado.value, horarios[index]));
                           }
                           
                         },
