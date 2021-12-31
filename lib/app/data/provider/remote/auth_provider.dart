@@ -75,12 +75,13 @@ class AuthProvider extends GetConnect {
 
   }
 
-   Future signIn(String nombre, String email, String password) async {
+   Future signIn(String nombre, String telefono, String email, String password) async {
 
     autenticando = true;
 
     final data = {
       "nombre": nombre,
+      "telefono": telefono,
       "email": email,
       "password": password
     };
@@ -102,7 +103,7 @@ class AuthProvider extends GetConnect {
       return true;
     }else{
       final respBody = json.decode(resp.body);
-      return respBody['msg'];
+      return respBody['msg'] ?? 'Error en el registro';
     }
 
 

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:privechat/app/modules/agenda/agenda_page.dart';
+import 'package:privechat/app/modules/profile/profile_page.dart';
 import 'package:privechat/app/modules/usuario/usuarios_page.dart';
 import 'package:flutter/material.dart';
 
@@ -31,8 +32,10 @@ class LandingPage extends StatelessWidget {
             selectedItemColor: Colors.white,
             unselectedLabelStyle: unselectedLabelStyle,
             selectedLabelStyle: selectedLabelStyle,
-            items: [
+            items: 1==2?[
               BottomNavigationBarItem(
+                activeIcon: const Icon(Icons.calendar_today),
+                tooltip: 'Marca tu turno',
                 icon: Container(
                   margin: const EdgeInsets.only(bottom: 7),
                   child: const Icon(
@@ -44,39 +47,58 @@ class LandingPage extends StatelessWidget {
                 backgroundColor: const Color.fromRGBO(36, 54, 101, 1.0),
               ),
               BottomNavigationBarItem(
+                activeIcon: const Icon(Icons.mail),
+                tooltip: 'Contacta con el administrador',
                 icon: Container(
                   margin: const EdgeInsets.only(bottom: 7),
                   child: const Icon(
-                    Icons.account_circle,
+                    Icons.mail,
                     size: 20.0,
                   ),
                 ),
-                label: 'Usuarios',
+                label: 'Contacto',
                 backgroundColor: const Color.fromRGBO(36, 54, 101, 1.0),
               ),
-              
-              // BottomNavigationBarItem(
-              //   icon: Container(
-              //     margin: const EdgeInsets.only(bottom: 7),
-              //     child: const Icon(
-              //       Icons.location_history,
-              //       size: 20.0,
-              //     ),
-              //   ),
-              //   label: 'Places',
-              //   backgroundColor: const Color.fromRGBO(36, 54, 101, 1.0),
-              // ),
-              // BottomNavigationBarItem(
-              //   icon: Container(
-              //     margin: const EdgeInsets.only(bottom: 7),
-              //     child: const Icon(
-              //       Icons.settings,
-              //       size: 20.0,
-              //     ),
-              //   ),
-              //   label: 'Settings',
-              //   backgroundColor: const Color.fromRGBO(36, 54, 101, 1.0),
-              // ),
+              BottomNavigationBarItem(
+                activeIcon: const Icon(Icons.account_circle_rounded),
+                tooltip: 'Revisa tu Perfil',
+                icon: Container(
+                  margin: const EdgeInsets.only(bottom: 7),
+                  child: const Icon(
+                    Icons.account_circle_rounded,
+                    size: 20.0,
+                  ),
+                ),
+                label: 'Perfil',
+                backgroundColor: const Color.fromRGBO(36, 54, 101, 1.0),
+              ),
+            ]:[
+              BottomNavigationBarItem(
+                activeIcon: const Icon(Icons.mail),
+                tooltip: 'Contacta con el administrador',
+                icon: Container(
+                  margin: const EdgeInsets.only(bottom: 7),
+                  child: const Icon(
+                    Icons.mail,
+                    size: 20.0,
+                  ),
+                ),
+                label: 'Contacto',
+                backgroundColor: const Color.fromRGBO(36, 54, 101, 1.0),
+              ),
+              BottomNavigationBarItem(
+                activeIcon: const Icon(Icons.account_circle_rounded),
+                tooltip: 'Revisa tu Perfil',
+                icon: Container(
+                  margin: const EdgeInsets.only(bottom: 7),
+                  child: const Icon(
+                    Icons.account_circle_rounded,
+                    size: 20.0,
+                  ),
+                ),
+                label: 'Perfil',
+                backgroundColor: const Color.fromRGBO(36, 54, 101, 1.0),
+              ),
             ],
           ),
         )));
@@ -91,9 +113,13 @@ class LandingPage extends StatelessWidget {
           buildBottomNavigationMenu(context, landingPageController),
       body: Obx(() => IndexedStack(
             index: landingPageController.tabIndex.value,
-            children: const [
+            children:  1==2?[
               AgendaPage(),
               UsuariosPage(),
+              ProfilePage()
+            ]:[
+              UsuariosPage(),
+              ProfilePage()
             ],
           )),
     ));

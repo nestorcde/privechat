@@ -46,6 +46,10 @@ dependencies:
   dio: ^4.0.1
   badges: ^2.0.1
   table_calendar: ^3.0.3
+  circular_profile_avatar: ^2.0.5
+  image_picker: ^0.8.4+4
+  get_storage: ^2.0.3
+  http_parser: ^4.0.0
 
 dev_dependencies:
   flutter_test:

@@ -77,10 +77,17 @@ class AgendaProvider {
     }
   }
 
-  Future<GeneralResponse> verificarTurno() async {
+  Future<GeneralResponse> verificarTurno(DateTime fecha, String hora) async {
     try {
       final token = await _storage.read(key: 'token');
-      final resp = await http.get(Environment().apiUrl('/turnos/verificar'),
+      final data = {
+        "dia": fecha.day,
+        "mes": fecha.month,
+        "anho": fecha.year,
+        "hora": hora
+      };
+      final resp = await http.post(Environment().apiUrl('/turnos/verificar'),
+        body: jsonEncode(data),
         headers: {
           'Content-Type': 'application/json',
           'x-token': token.toString()
@@ -88,7 +95,7 @@ class AgendaProvider {
       );
       return generalResponseFromJson(resp.body);
     } catch (e) {
-      return GeneralResponse(ok: false, msg: 'Error al verificar', conn: false, fecha: DateTime.now());
+      return GeneralResponse(ok: false, msg: 'Error al verificar', conn: false, fecha: DateTime.now(), propio: false);
     }
   }
 }

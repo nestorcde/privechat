@@ -16,6 +16,9 @@ import 'package:privechat/app/modules/agenda/agenda_repository.dart';
 import 'package:privechat/app/modules/landing/landing_controller.dart';
 import 'package:privechat/app/modules/loading/loading_controller.dart';
 import 'package:privechat/app/modules/login/login_controller.dart';
+import 'package:privechat/app/modules/profile/profile_controller.dart';
+import 'package:privechat/app/modules/profile/profile_provider.dart';
+import 'package:privechat/app/modules/profile/profile_repository.dart';
 import 'package:privechat/app/modules/usuario/usuarios_provider.dart';
 import 'package:privechat/app/modules/usuario/usuarios_repository.dart';
 import 'package:privechat/app/modules/usuario/usuarios_controller.dart';
@@ -36,6 +39,7 @@ class DependencyInjection {
     Get.put<ChatProvider>(ChatProvider());
     Get.put<UsuarioProvider>(UsuarioProvider());
     Get.put<AgendaProvider>(AgendaProvider());
+    Get.put<ProfileProvider>(ProfileProvider());
     
     //Repositories
     Get.put<LocalAuthRepository>(LocalAuthRepository());
@@ -44,6 +48,7 @@ class DependencyInjection {
     Get.put<ChatRepository>(ChatRepository());
     Get.put<UsuarioRepository>(UsuarioRepository());
     Get.put<AgendaRepository>(AgendaRepository());
+    Get.put<ProfileRepository>(ProfileRepository());
 
     //Controllers
     Get.put<LoadingController>(LoadingController());
@@ -52,6 +57,8 @@ class DependencyInjection {
     Get.put<ChatController>(ChatController());
     Get.put<AgendaController>(AgendaController());
     Get.put<LandingController>(LandingController());
+    Get.put<ProfileController>(ProfileController());
+    Get.put<ProfileController>(ProfileController());
 
   }
 }

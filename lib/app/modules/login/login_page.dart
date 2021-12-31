@@ -91,6 +91,7 @@ class _FormState extends State<Form> {
         children: [
           CustomInput(
             icon: Icons.email_outlined,
+            enabled: true,
             placeholder: 'email',
             textController: emailController,
             keyboardType: TextInputType.emailAddress,
@@ -100,6 +101,7 @@ class _FormState extends State<Form> {
           ),
           CustomInput(
             icon: Icons.lock_outline,
+            enabled: true,
             placeholder: 'password',
             textController: passwordController,
             keyboardType: TextInputType.text,

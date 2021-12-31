@@ -18,7 +18,7 @@ set autenticando(bool valor) {
 
   Future logout() => _api.logout();
 
-  Future signIn(String nombre, String email, String password) => _api.signIn(nombre, email, password);
+  Future signIn(String nombre, String telefono, String email, String password) => _api.signIn(nombre, telefono, email, password);
 
   Future<bool> isLoggedIn()=> _api.isLoggedIn();
 

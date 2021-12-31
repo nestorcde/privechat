@@ -5,10 +5,11 @@ class CustomInput extends StatelessWidget {
 
   final IconData icon;
   final String placeholder;
-  final TextEditingController textController;
+  final TextEditingController? textController;
   final TextInputType keyboardType;
   final bool isPassword;
-  final Function onChanged;
+  final bool enabled;
+  final Function? onChanged;
 
 
 
@@ -16,10 +17,11 @@ class CustomInput extends StatelessWidget {
     Key? key, 
     required this.icon, 
     required this.placeholder, 
-    required this.textController, 
+    required this.enabled,
+    this.textController, 
     this.keyboardType = TextInputType.text, 
     this.isPassword = false, 
-    required this.onChanged
+    this.onChanged
   }) : super(key: key);
 
   @override
@@ -43,6 +45,7 @@ class CustomInput extends StatelessWidget {
         keyboardType: keyboardType,
         obscureText: isPassword,
         controller: textController,
+        enabled: enabled,
         decoration: InputDecoration(
           prefixIcon: Icon(icon),
           focusedBorder: InputBorder.none,
@@ -50,7 +53,7 @@ class CustomInput extends StatelessWidget {
           hintText: placeholder
         ),
         onChanged:(value) {
-          onChanged(value);
+          onChanged!(value);
         },
       ),
     );

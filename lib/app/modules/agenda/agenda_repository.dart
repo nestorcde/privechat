@@ -14,7 +14,7 @@ Future<String> registrarTurnos(DateTime fecha, String hora)=>api.registrarTurno(
 
 Future<String> eliminarTurnos(String id) => api.eliminarTurno(id);
 
-Future<GeneralResponse> verificarTurno() => api.verificarTurno();
+Future<GeneralResponse> verificarTurno(DateTime fecha, String hora) => api.verificarTurno(fecha, hora);
 
 
 

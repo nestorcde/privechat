@@ -36,13 +36,14 @@ class _AgendaPageState extends State<AgendaPage> {
 
   @override
   void initState() {
-    super.initState();
     agendaController = Get.find<AgendaController>();
     agendaController.cargaEventos();
 
     agendaController.diaSeleccionado.value = agendaController.diaEnfocado.value;
     agendaController.selectedEvents.value = _getEventsForDay(agendaController.diaSeleccionado.value);
     usuario = agendaController.usuario;
+    agendaController.socket.on('registra-turno', agendaController.nuevoTurno);
+    super.initState();
   }
 
   @override

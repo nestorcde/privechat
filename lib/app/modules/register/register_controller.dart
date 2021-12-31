@@ -10,10 +10,14 @@ class RegisterController extends GetxController {
   final SocketRepository _socketRepository = Get.find<SocketRepository>();
 
   RxBool autenticando = false.obs;
-  RxString nombre = ''.obs, email = ''.obs, password = ''.obs;
+  RxString nombre = ''.obs, email = ''.obs, password = ''.obs, telefono = ''.obs;
 
   nomOnChange(String text){
     nombre.value = text;
+  }
+
+  telOnChange(String text) {
+    telefono.value = text;
   }
 
   pswOnChange(String text){
@@ -25,7 +29,7 @@ class RegisterController extends GetxController {
   }
 
   Future register() async {
-    final registroOk = await authRepository.signIn(nombre.value.trim(), email.value.trim(), password.value.trim());
+    final registroOk = await authRepository.signIn(nombre.value.trim(), telefono.value.trim(), email.value.trim(), password.value.trim());
 
     if(registroOk == true){
       Get.offNamed(Routes.LANDING);
@@ -35,5 +39,6 @@ class RegisterController extends GetxController {
       //mostrarAlerta(context, 'Registro incorrecto', registroOk);
     }
   }
+
   
 }

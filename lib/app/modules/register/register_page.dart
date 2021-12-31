@@ -66,6 +66,7 @@ class _Form extends StatefulWidget {
 
 class __FormState extends State<_Form> {
   final nombreController = TextEditingController();
+  final telefonoController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -85,6 +86,7 @@ class __FormState extends State<_Form> {
         children: [
           CustomInput(
             icon: Icons.account_circle_outlined,
+            enabled: true,
             placeholder: 'nombre',
             textController: nombreController,
             onChanged: (value)  {
@@ -92,7 +94,18 @@ class __FormState extends State<_Form> {
             },
           ),
           CustomInput(
+            icon: Icons.phone_android,
+            enabled: true,
+            placeholder: 'telefono',
+            textController: telefonoController,
+            keyboardType: TextInputType.phone,
+            onChanged: (value)  {
+              widget.registerCtrl.telOnChange(value);
+            },
+          ),
+          CustomInput(
             icon: Icons.email_outlined,
+            enabled: true,
             placeholder: 'email',
             textController: emailController,
             keyboardType: TextInputType.emailAddress,
@@ -102,6 +115,7 @@ class __FormState extends State<_Form> {
           ),
           CustomInput(
             icon: Icons.lock_outline,
+            enabled: true,
             placeholder: 'password',
             textController: passwordController,
             isPassword: true,
@@ -111,7 +125,7 @@ class __FormState extends State<_Form> {
           ),
           BotonAzul(
               autenticando: widget.registerCtrl.autenticando.value, //authService.autenticando,
-              texto: 'Login',
+              texto: 'Registrarse',
               funcion: () async {
                 FocusScope.of(context).unfocus();
                 widget.registerCtrl.register();

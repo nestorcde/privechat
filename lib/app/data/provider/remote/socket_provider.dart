@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:privechat/app/data/provider/remote/auth_provider.dart';
 import 'package:privechat/app/utils/constants.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -13,7 +14,7 @@ import 'package:get/get.dart';
 class SocketProvider  {
 
   final FlutterSecureStorage _storage = Get.find<FlutterSecureStorage>();
-
+  final AuthProvider _authProvider = Get.find<AuthProvider>();
   Rx<ServerStatus> serverStatus = ServerStatus.Connecting.obs;
   RxBool usuarioConectado = false.obs;
   late IO.Socket _socket;
@@ -44,11 +45,14 @@ class SocketProvider  {
     });
 
     this._socket.on('usuario-conectado-desconectado', (_) {
-      if(usuarioConectado.value){
-        usuarioConectado.value = false;
-      }else{
-        usuarioConectado.value = true;
-      }
+      //print(_);
+      //if(_['uid'] != _authProvider.usuario.uid){
+        if(usuarioConectado.value){
+          usuarioConectado.value = false;
+        }else{
+          usuarioConectado.value = true;
+        }
+      //}
       //print('en usuario-conectado-desconectado');
       //this.serverStatus.value = ServerStatus.Online;
     });

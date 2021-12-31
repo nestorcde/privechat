@@ -27,12 +27,9 @@ class UsuarioController extends GetxController {
 
   Rx<ServerStatus>  estado = ServerStatus.Connecting.obs;
 
-  cargarUsuarios(){
-      _usuarioRepository.getUsuarios().then((value) {
-        usuarios.value = value;
-        // update();
-      }
-    );
+  cargarUsuarios() async{
+      usuarios.value = await _usuarioRepository.getUsuarios();
+      update();
   }
   
 

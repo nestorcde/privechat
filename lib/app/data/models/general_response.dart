@@ -14,18 +14,21 @@ class GeneralResponse {
         required this.conn,
         required this.msg,
         required this.fecha,
+        required this.propio,
     });
 
     bool ok;
     bool conn;
     String msg;
     DateTime fecha;
+    bool propio;
 
     factory GeneralResponse.fromJson(Map<String, dynamic> json) => GeneralResponse(
         ok: json["ok"],
         conn: json["conn"],
         msg: json["msg"],
         fecha: DateTime.parse(json["fecha"]),
+        propio: json["propio"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -33,5 +36,6 @@ class GeneralResponse {
         "conn": conn,
         "msg": msg,
         "fecha": fecha.toIso8601String(),
+        "propio": propio,
     };
 }
