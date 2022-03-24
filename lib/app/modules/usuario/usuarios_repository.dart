@@ -9,4 +9,6 @@ class UsuarioRepository {
 
   Future<List<Usuario>> getUsuarios()  =>  api.getUsuarios();
 
+  Future<void> setTuto(String uid) => api.setTuto(uid);
+
 }

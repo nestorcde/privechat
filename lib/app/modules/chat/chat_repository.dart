@@ -8,6 +8,7 @@ class ChatRepository {
 
   final ChatProvider api = Get.find<ChatProvider>();
 
+
   Future<List<Mensaje>> getChat(String usuarioId) => api.getChat(usuarioId);
 
   Usuario get usuarioPara => api.usuarioPara;
@@ -15,5 +16,7 @@ class ChatRepository {
   set usuarioPara(Usuario usuario){
     api.usuarioPara = usuario;
   }
+
+  Future<bool> revisar(String uid, bool value) => api.revisar(uid, value);
 
 }

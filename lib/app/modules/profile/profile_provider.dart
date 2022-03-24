@@ -100,63 +100,18 @@ class ProfileProvider extends GetConnect {
 
     // multipart that takes file.. here this "image_file" is a key of the API request
     var multipartFile = await http.MultipartFile.fromPath('imgProfile', filePath.path, filename: name);
-    // var multipartFile = http.MultipartFile.fromBytes('file',
-    //     (await rootBundle.load('assets/blank-profile-picture.png')).buffer.asUint8List(),
-    //     filename: name);
-
-    // add file to multipart
-    //request.files.add(multipartFile);
     request.files.add(await http.MultipartFile.fromPath('imgProfile', filePath.path, contentType: MediaType('image', 'jpeg')));
     // send request to upload image
     http.StreamedResponse response = await request.send();
     var responseData = await response.stream.toBytes();
     var result = String.fromCharCodes(responseData);
     if (response.statusCode == 200) {
-      // listen for response
-      // response.stream.transform(utf8.decoder).listen((value) {
-      //   //respuesta = value;
-      // }).onData((value)  {
         
         final loginResponse = updateProfileResponseFromJson(result);
         authProvider.usuario = loginResponse.usuario;
-        //print(value);
-      // });
-      //return [true, ''];
       return jsonDecode(result);
     } else {
-      //print(response.);
-      //return [false, 'Error en el Registro'];
       return  jsonDecode(result);
     }
-
-    // // var response = await request.send();
-    // // var responseData = await response.stream.toBytes();
-    // // var result = String.fromCharCodes(responseData);
-    // // print(result);
-    // print(filePath.absolute.path);
-    
-    // var uri = Environment().apiUrl('/profile/imageProfile');
-    // final token = await _storage.read(key: "token");
-    // var headers = {
-    //   'x-token': token ?? ''
-    // };
-    // var request = http.MultipartRequest(
-    //     'POST', uri);
-    // request.fields.addAll({'uid': usuario.uid!});
-    // request.files.add(await http.MultipartFile.fromPath('imgProfile', filePath.path, contentType: MediaType('image', 'jpeg'))
-    //   // await http.MultipartFile.fromPath('imgProfile',
-    //   //   filePath.absolute.path)
-    //     );
-    // request.headers.addAll(headers);
-
-    // http.StreamedResponse response = await request.send();
-
-    // if (response.statusCode == 200) {
-    //   print(await response.stream.bytesToString());
-    //   return response;
-    // } else {
-    //   print(response.reasonPhrase);
-    //   return response;
-    // }
   }
 }

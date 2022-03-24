@@ -29,7 +29,7 @@ class RegisterPage extends StatelessWidget {
                   children: [
                     CustomLogo(
                       imagePath: 'assets/tag-logo.png',
-                      textLabel: 'Registro',
+                      textLabel: 'Agendame',
                     ),
                     _Form(registerCtrl: _, loadingCtrl: controller),
                     Labels(
@@ -37,13 +37,17 @@ class RegisterPage extends StatelessWidget {
                       texto2: 'Inicia sesión!',
                       ruta: 'login',
                     ),
-                    Container(
-                      child: Text(
-                        'Terminos y Condiciones',
-                        style: TextStyle(fontWeight: FontWeight.w200),
-                      ),
-                      margin: EdgeInsets.only(bottom: 30),
-                    )
+                      SizedBox(height: 30,)
+                    // GestureDetector(
+                    //   child: Container(
+                    //     child: Text(
+                    //       'Terminos y Condiciones',
+                    //       style: TextStyle(fontWeight: FontWeight.w200),
+                    //     ),
+                    //     margin: EdgeInsets.only(bottom: 30),
+                    //   ),
+                    //   onTap: () => Get.snackbar('JAJAJAJA', 'TE LA CREISTEEEE!'),
+                    // )
                   ],
                 ),
               ),

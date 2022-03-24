@@ -38,10 +38,12 @@ class ProfilePage extends GetView<ProfileController> {
                 child: Stack(
                   children: [
                     Positioned.fill(
-                        child: Obx(() => Image(
-                            image: controller
-                                .profileImage.value //controller.returnImage(),
-                            ))),
+                        child: Obx(
+                      () => CircleAvatar(
+                          backgroundImage: controller
+                              .profileImage.value //controller.returnImage(),
+                          ),
+                    )),
                     Positioned(
                         right: width * 0.02,
                         child: Container(

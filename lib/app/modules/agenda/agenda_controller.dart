@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:privechat/app/data/models/event_model.dart';
@@ -54,7 +55,7 @@ class AgendaController extends GetxController {
   void cargaEventos()  {
     repository.getTurnos().then((value){
       kEventSource = value;
-      
+      value.forEach((key, value) { print(value); });
       kEvents.value = LinkedHashMap<DateTime, List<Event>>(
       equals: isSameDay,
       hashCode: getHashCode,
@@ -65,8 +66,8 @@ class AgendaController extends GetxController {
   }
   Future<Map<DateTime, List<Event>>> getTurnos() => repository.getTurnos();
 
-  void registrarTurno(DateTime fecha, String hora) async {
-     final respuesta = await repository.registrarTurnos(fecha, hora);
+  void registrarTurno(DateTime fecha, String hora, String nombre) async {
+     final respuesta = await repository.registrarTurnos(fecha, hora, nombre);
      cargaEventos();
      socket.emit('registra-turno',{"fecha": diaEnfocado.value.toIso8601String(), "uid": usuario.uid});
      Get.snackbar('Registrar Turno', respuesta);
@@ -79,10 +80,10 @@ class AgendaController extends GetxController {
     Get.snackbar('Eliminar Turno', respuesta);
   }
 
-  void verificarTurno(DateTime fecha, String hora) async {
+  void verificarTurno(DateTime fecha, String hora, String nombre) async {
      final respuesta = await repository.verificarTurno(fecha, hora);
      if(respuesta.ok){
-       registrarTurno(fecha, hora);
+       registrarTurno(fecha, hora, '');
      }else{
        if(respuesta.conn){
          if(respuesta.propio){
@@ -122,6 +123,30 @@ class AgendaController extends GetxController {
     );
   }
 
+  void registrarOtro(String horario) async{
+    TextEditingController controller = TextEditingController();
+    await dialogoOtro(controller, horario, diaEnfocado, verificarTurno);
+    //  await Get.dialog(
+    //   AlertDialog(
+    //     title:  Text('Registro'),
+    //     content: Text('Ingrese el nombre de la persona a la que desea agendar'),
+    //     actions: [
+    //       TextField(controller: controller,),
+    //       TextButton(onPressed: (){
+    //         if(controller.text.isNotEmpty){
+    //           registrarTurno(diaEnfocado.value,horario,controller.text); 
+    //           Get.back();
+    //         }else{
+    //           Get.snackbar('Falta Nombre', 'Ingrese nombre de la persona a la que agendaar');
+    //         }
+    //       }, child:  Text('OK'))
+    //     ],
+    //   )
+    // );
+  }
+
+
+  
 
   
 }

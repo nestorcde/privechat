@@ -2,8 +2,10 @@
 
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:privechat/app/data/provider/remote/auth_provider.dart';
+import 'package:privechat/app/ui/widgets/dialogo_turno.dart';
 import 'package:privechat/app/utils/constants.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -24,7 +26,7 @@ class SocketProvider  {
   IO.Socket get socket => this._socket;
   Function get emit => this._socket.emit; 
 
-  void connect() async  {
+  Future<void> connect() async  {
     final token = await _storage.read(key: 'token');
     // Dart client
     this._socket = IO.io(Platform.isAndroid
@@ -57,6 +59,8 @@ class SocketProvider  {
       //this.serverStatus.value = ServerStatus.Online;
     });
 
+    this._socket.on('reiniciar', reiniciar);
+
     this._socket.on('disconnect', (_) {
       print('en Disconnect');
       this.serverStatus.value = ServerStatus.Offline;
@@ -68,6 +72,12 @@ class SocketProvider  {
     this._socket.disconnect();
   }
 
+  void reiniciar(data)async {
+    print('Reiniciar ${data['uid']}');
+    await dialogoTurno('Revision', 'Cambios en configuracion, se cerrara la App', false, '', (){});
+    SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    //Get.reset(clearRouteBindings: true );
+  }
 
 
 }

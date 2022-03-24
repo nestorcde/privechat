@@ -5,6 +5,7 @@ class Event {
         required this.dia,
         required this.mes,
         required this.anho,
+        required this.nombre,
         required this.hora,
         required this.createdAt,
         required this.updatedAt,
@@ -15,6 +16,7 @@ class Event {
     int dia;
     int mes;
     int anho;
+    String nombre;
     String hora;
     DateTime createdAt;
     DateTime updatedAt;
@@ -25,6 +27,7 @@ class Event {
         dia: json["dia"],
         mes: json["mes"],
         anho: json["anho"],
+        nombre: json["nombre"],
         hora: json["hora"],
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
@@ -36,6 +39,7 @@ class Event {
         "dia": dia,
         "mes": mes,
         "anho": anho,
+        "nombre": nombre,
         "hora": hora,
         "createdAt": createdAt.toIso8601String(),
         "updatedAt": updatedAt.toIso8601String(),
@@ -47,21 +51,25 @@ class Uid {
         required this.id,
         required this.nombre,
         required this.email,
+        required this.telefono
     });
 
     String id;
     String nombre;
     String email;
+    String telefono;
 
     factory Uid.fromJson(Map<String, dynamic> json) => Uid(
         id: json["_id"],
         nombre: json["nombre"],
         email: json["email"],
+        telefono: json["telefono"],
     );
 
     Map<String, dynamic> toJson() => {
         "_id": id,
         "nombre": nombre,
         "email": email,
+        "telefono": telefono,
     };
 }

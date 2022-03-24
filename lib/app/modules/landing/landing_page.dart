@@ -32,7 +32,7 @@ class LandingPage extends StatelessWidget {
             selectedItemColor: Colors.white,
             unselectedLabelStyle: unselectedLabelStyle,
             selectedLabelStyle: selectedLabelStyle,
-            items: 1==2?[
+            items: landingPageController.usuario.admin! || landingPageController.usuario.revisado! ?[
               BottomNavigationBarItem(
                 activeIcon: const Icon(Icons.calendar_today),
                 tooltip: 'Marca tu turno',
@@ -113,7 +113,7 @@ class LandingPage extends StatelessWidget {
           buildBottomNavigationMenu(context, landingPageController),
       body: Obx(() => IndexedStack(
             index: landingPageController.tabIndex.value,
-            children:  1==2?[
+            children:  landingPageController.usuario.admin! || landingPageController.usuario.revisado!?[
               AgendaPage(),
               UsuariosPage(),
               ProfilePage()

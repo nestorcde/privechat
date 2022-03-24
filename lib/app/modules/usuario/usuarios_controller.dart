@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:privechat/app/data/models/usuario_model.dart';
 import 'package:privechat/app/data/repository/local/local_auth_repository.dart';
@@ -25,6 +26,8 @@ class UsuarioController extends GetxController {
 
   Future<List<Usuario>> getAllUsuarios()  =>  _usuarioRepository.getUsuarios();
 
+  setTuto() async =>_usuarioRepository.setTuto(usuario.uid!);
+
   Rx<ServerStatus>  estado = ServerStatus.Connecting.obs;
 
   cargarUsuarios() async{
@@ -35,6 +38,26 @@ class UsuarioController extends GetxController {
 
   void disconnect(){
     _socketRepository.disconnect();
+  }
+  
+  NetworkImage retImgProfile(Usuario usuario){
+    try {
+      late NetworkImage image;
+      if(usuario.imgProfile!.isNotEmpty){
+        try {
+          image = NetworkImage(URL_IMAGE + usuario.imgProfile!);
+        } catch (e) {
+          print('Error: '+e.toString());
+          image = NetworkImage('https://www.pinclipart.com/picdir/middle/84-841840_svg-royalty-free-library-icon-svg-profile-profile.png');
+        }
+      }else{
+        image = NetworkImage('https://www.pinclipart.com/picdir/middle/84-841840_svg-royalty-free-library-icon-svg-profile-profile.png');
+      }
+      return image;
+    }catch (e) {
+      print('Error: '+e.toString());
+      return const NetworkImage('https://www.pinclipart.com/picdir/middle/84-841840_svg-royalty-free-library-icon-svg-profile-profile.png');
+    }
   }
 
 }

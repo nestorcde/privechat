@@ -19,8 +19,12 @@ class LoadingController extends GetxController {
 
   Future<void> _init()async{
       final bool isLogged = await _repository.isLoggedIn();
-      if(isLogged) _socketRepository.connect();
-      Get.offAllNamed(isLogged ? Routes.LANDING: Routes.LOGIN);
+      if(isLogged){
+       await _socketRepository.connect().whenComplete(() =>Get.offAllNamed(Routes.LANDING));
+        
+      }else{
+        Get.offAllNamed(Routes.LOGIN);
+      }
   }
  
   

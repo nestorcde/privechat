@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:privechat/app/data/models/updateProfile_response.dart';
 import 'package:privechat/app/data/models/usuario_model.dart';
@@ -89,11 +90,16 @@ class ProfileController extends GetxController {
     try {
       usuarioObs = authProvider.usuario.obs;
       final pickedFile = await ImagePicker().pickImage(source: imageSource);
-      File file = convertToFile(pickedFile!);
+      //File file = convertToFile(pickedFile!);
+      File? file = await ImageCropper.cropImage(
+        sourcePath: pickedFile!.path,
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+        cropStyle: CropStyle.circle,
+      );
       isLoading(true);
       if (pickedFile != null) {
         //var response = await 
-        repository.uploadFile(file, usuarioObs.value, pickedFile.name).then((response) async {
+        repository.uploadFile(file!, usuarioObs.value, pickedFile.name).then((response) async {
 
 
         // var responseData = await response.stream.toBytes();
@@ -118,7 +124,7 @@ class ProfileController extends GetxController {
         });
       } else {
         Get.snackbar('Fallido', 'Imagen no seleccionada',
-            margin: EdgeInsets.only(top: 5,left: 10,right: 10));
+            margin: const EdgeInsets.only(top: 5,left: 10,right: 10));
       }
     } finally {
       isLoading(false);

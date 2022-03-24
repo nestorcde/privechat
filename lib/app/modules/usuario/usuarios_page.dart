@@ -1,14 +1,14 @@
+
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:privechat/app/data/models/usuario_model.dart';
 import 'package:privechat/app/data/provider/remote/socket_provider.dart';
 import 'package:privechat/app/modules/chat/chat_controller.dart';
-import 'package:privechat/app/modules/chat/chat_page.dart';
 import 'package:privechat/app/modules/usuario/usuarios_controller.dart';
 import 'package:privechat/app/routes/routes_app.dart';
 import 'package:privechat/app/ui/widgets/custom_appbar.dart';
-import 'package:privechat/app/utils/constants.dart';
+import 'package:privechat/app/ui/widgets/dialogo_turno.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class UsuariosPage extends StatefulWidget {
@@ -28,6 +28,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
 
   List<Usuario> usuarios = [];
   late UsuarioController usuarioController;
+  var indicador = 1;
 
   @override
   void initState() {
@@ -45,6 +46,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
     return GetBuilder<UsuarioController>(
       builder: (_) {
         _socketProvider = Get.find<SocketProvider>();
+        
         return Scaffold(
             appBar: customAppBar('Contacto'),
             body: SmartRefresher(
@@ -80,23 +82,34 @@ class _UsuariosPageState extends State<UsuariosPage> {
 
   ListView _listViewUsuarios(UsuarioController usuarioController) {
     //usuarioController.cargarUsuarios();
+    if(!usuarioController.usuario.tutorial! && indicador == 1){
+      indicador = 0;
+      Future.delayed(Duration.zero, () =>  dialogoTuto(
+        'Bienvenid@',
+        'Para poder empezar a agendar tus turnos, debes completar tu perfil con tu foto, y solicitar a la administradora que acepte tu solicitud', 
+        'OK', usuarioController.setTuto));
+    }
     return ListView.separated(
         physics: const BouncingScrollPhysics(),
         itemBuilder: (_, i) =>
-            _usuariosTile(usuarioController.usuarios.value[i]),
+            _usuariosTile(usuarioController.usuarios.value[i], usuarioController),
         separatorBuilder: (_, i) => const Divider(),
         itemCount: usuarioController.usuarios.value.length);
   }
 
-  ListTile _usuariosTile(Usuario usuario) {
+  ListTile _usuariosTile(Usuario usuario, UsuarioController usuarioController) {
+    NetworkImage image = usuarioController.retImgProfile(usuario);
     return ListTile(
+      tileColor: usuario.revisado!?Colors.white:Colors.grey,
       title: Text(usuario.nombre!),
       subtitle: Text(usuario.email!),
       leading: CircleAvatar(
-        child: usuario.imgProfile!.isNotEmpty
-            ? Image.network(URL_IMAGE + usuario.imgProfile!,)
-            : Text(usuario.nombre!.substring(0, 2).toUpperCase()),
-        backgroundColor: Colors.blue[100],
+        child: image==null?
+        const SizedBox():
+        const Icon(Icons.account_circle, size: 40, color: Colors.grey,),
+        backgroundColor: Colors.blue[100] ,
+        backgroundImage: image
+        
       ),
       trailing: SizedBox(
         width: 100,

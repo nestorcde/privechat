@@ -32,14 +32,15 @@ class AgendaProvider {
       return {};
     }
   }
-  Future<String> registrarTurno(DateTime fecha, String hora) async {
+  Future<String> registrarTurno(DateTime fecha, String hora, String nombre) async {
     try {
       final token = await _storage.read(key: 'token');
       final data = {
         "dia": fecha.day,
         "mes": fecha.month,
         "anho": fecha.year,
-        "hora": hora
+        "hora": hora,
+        "nombre": nombre
       };
       final resp = await http.post(Environment().apiUrl('/turnos/nuevo'),
         body: jsonEncode(data),

@@ -165,19 +165,28 @@ class _AgendaPageState extends State<AgendaPage> {
                     Color? color = Colors.green;
                     TurnoStatus estado = TurnoStatus.Libre;
                     String turnoUid = '';
+                    String turnoNombre = '';
+                    String turnoEmail = '';
+                    String turnoTel = '';
                     int dia = agendaController.diaSeleccionado.value.day;
                     int mes = agendaController.diaSeleccionado.value.month;
                     int anho = agendaController.diaSeleccionado.value.year;
                     if(eventoDeHoy!=null){
                       for (var evento in eventoDeHoy) {
                         if(evento.hora==horarios[index]){
+                          turnoUid = evento.id;
                           if(evento.uid.id==usuario.uid){
                             estado = TurnoStatus.Tuyo;
-                            color = Colors.amber;
-                            turnoUid = evento.id;
+                            color = usuario.admin!? Colors.grey : Colors.amber;
+                            turnoNombre = usuario.admin!? evento.nombre: evento.uid.nombre;
+                            turnoEmail = usuario.admin!? '': evento.uid.email;
+                            turnoTel = usuario.admin!? '': evento.uid.telefono;
                           }else{
                             estado = TurnoStatus.Ocupado;
                             color = Colors.grey;
+                            turnoNombre = evento.uid.nombre;
+                            turnoEmail = evento.uid.email;
+                            turnoTel = evento.uid.telefono;
                           }
                         }
                       }
@@ -192,14 +201,23 @@ class _AgendaPageState extends State<AgendaPage> {
                           color: color,),
                       child: ListTile(
                         onTap: () {
+                          TextEditingController nombreCtrl = TextEditingController();
                           switch (estado) {
                             case TurnoStatus.Ocupado:
-                              dialogoTurno(
-                                'Registro de Turno', 
-                                'Turno Ocupado', 
-                                false, 
-                                'boton', 
-                                ()=>{});
+                              agendaController.usuario.admin!?
+                                dialogoTurno(
+                                  'Registro de Turno', 
+                                  'Turno Ocupado, Desea Eliminar el turno de $turnoNombre', 
+                                  true, 
+                                  'Eliminar', 
+                                  ()=>agendaController.eliminarTurno(turnoUid))
+                              :
+                                dialogoTurno(
+                                  'Registro de Turno', 
+                                  'Turno Ocupado', 
+                                  false, 
+                                  'boton', 
+                                  ()=>{});
                               break;
                             case TurnoStatus.Tuyo:
                               dialogoTurno('Registro de Turno', 
@@ -209,15 +227,29 @@ class _AgendaPageState extends State<AgendaPage> {
                                 ()=>agendaController.eliminarTurno(turnoUid));
                               break;
                             default:
-                              dialogoTurno('Registro de Turno', 
-                                'Desea Registrar turno el $dia/${mes<10?'0'+mes.toString():mes}/$anho a las ${horarios[index]}?', 
-                                true, 
-                                'Registrar', 
-                                ()=>agendaController.verificarTurno(agendaController.diaSeleccionado.value, horarios[index]));
+                              
+                              agendaController.usuario.admin!?
+                                dialogoOtro(nombreCtrl, horarios[index], agendaController.diaEnfocado, agendaController.verificarTurno)
+                              : 
+                                dialogoTurno('Registro de Turno', 
+                                  'Desea Registrar turno el $dia/${mes<10?'0'+mes.toString():mes}/$anho a las ${horarios[index]}?', 
+                                  true, 
+                                  'Registrar', 
+                                  ()=>agendaController.verificarTurno(agendaController.diaSeleccionado.value, horarios[index], ''));
+
                           }
                           
                         },
-                        title: Text('${horarios[index]}'),
+                        title: agendaController.usuario.admin! && estado != TurnoStatus.Libre ?
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text('${horarios[index]} - $turnoNombre'),
+                                      Text('Email: $turnoEmail  Telefono: $turnoTel'),
+                                    ],
+                                  )
+                                :
+                                  Text('${horarios[index]}'),
                       ),
                     );
                   },

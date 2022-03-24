@@ -1,14 +1,16 @@
 // ignore_for_file: unnecessary_new
 
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:flutter_image/network.dart';
 import 'package:get/get.dart';
 import 'package:privechat/app/data/models/mensajes_response.dart';
 
 import 'package:privechat/app/modules/chat/chat_controller.dart';
 import 'package:privechat/app/ui/widgets/chat_message.dart';
+import 'package:privechat/app/utils/constants.dart';
 
 class ChatPage extends StatefulWidget {
    ChatPage({Key? key}) : super(key: key);
@@ -83,6 +85,11 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                 elevation: 1,
                 backgroundColor: Colors.white,
                 leadingWidth: 75,
+                actions: [
+                  _.usuario.admin!?
+                  Switch.adaptive(value: _.usuarioPara.revisado!, onChanged: _.revisar):
+                  const SizedBox()
+                ],
                 leading: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   mainAxisSize: MainAxisSize.min,
@@ -102,12 +109,13 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                     Flexible(
                       flex: 2,
                       child: CircleAvatar(
-                        child: Text(
-                          _.usuarioPara.nombre!.substring(0, 2).toUpperCase(),
-                          style: const TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
-                        ),
+                        child: _.usuarioPara.imgProfile!.isNotEmpty?
+                          const SizedBox():
+                          const Icon(Icons.account_circle, size: 40, color: Colors.grey,),
                         backgroundColor: Colors.blue[100],
+                        backgroundImage: _.retImgProfile()
+                        //backgroundImage:  _.usuarioPara.imgProfile!.isNotEmpty?NetworkImageWithRetry(URL_IMAGE + _.usuarioPara.imgProfile!):NetworkImageWithRetry('https://www.pinclipart.com/picdir/middle/84-841840_svg-royalty-free-library-icon-svg-profile-profile.png')
+                        //backgroundImage: _.usuarioPara.imgProfile!.isEmpty?NetworkImage(URL_IMAGE + _.usuarioPara.imgProfile!):,
                       ),
                     ),
                   ],

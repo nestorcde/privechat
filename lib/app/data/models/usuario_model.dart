@@ -27,6 +27,7 @@ class Usuario {
         required this.online,
         this.noLeidos,
         this.revisado,
+        this.tutorial,
         this.admin,
         this.uid,
     });
@@ -38,6 +39,7 @@ class Usuario {
     bool online;
     int? noLeidos;
     bool? revisado;
+    bool? tutorial;
     bool? admin;
     String? uid;
 
@@ -49,6 +51,7 @@ class Usuario {
         online: json["online"],
         noLeidos: json["noLeidos"],
         revisado: json["revisado"],
+        tutorial: json["tutorial"],
         admin: json["admin"],
         uid: json["uid"],
     );
@@ -61,6 +64,7 @@ class Usuario {
         "online": online,
         "noLeidos": noLeidos,
         "revisado": revisado,
+        "tutorial": tutorial,
         "admin": admin,
         "uid": uid,
     };

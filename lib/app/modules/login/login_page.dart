@@ -32,7 +32,7 @@ class LoginPage extends StatelessWidget {
                     children: [
                       CustomLogo(
                         imagePath: 'assets/tag-logo.png',
-                        textLabel: 'Messenger',
+                        textLabel: 'Agendame',
                       ),
                       Form(loginCtrl: _/*, loadingCtrl: loadingCtrl*/),
                       Labels(
@@ -40,13 +40,17 @@ class LoginPage extends StatelessWidget {
                         texto2: 'Crea una ahora!',
                         ruta: 'register',
                       ),
-                      Container(
-                        child: Text(
-                          'Terminos y Condiciones',
-                          style: TextStyle(fontWeight: FontWeight.w200),
-                        ),
-                        margin: EdgeInsets.only(bottom: 10),
-                      )
+                      SizedBox(height: 30,)
+                      // GestureDetector(
+                      //   child: Container(
+                      //     child: Text(
+                      //       'Terminos y Condiciones',
+                      //       style: TextStyle(fontWeight: FontWeight.w200),
+                      //     ),
+                      //     margin: EdgeInsets.only(bottom: 30),
+                      //   ),
+                      //   onTap: () => Get.snackbar('JAJAJAJA', 'TE LA CREISTEEEE!'),
+                      // )
                     ],
                   ),
                 ),

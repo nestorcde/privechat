@@ -16,7 +16,7 @@ class SocketRepository {
 
   Function get emit => _socketProvider.emit;
 
-  void connect() {
+  Future<void> connect() async {
     _socketProvider.connect();
     serverStatus = _socketProvider.serverStatus;
   }

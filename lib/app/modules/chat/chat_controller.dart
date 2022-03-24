@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:privechat/app/data/models/mensajes_response.dart';
+import 'package:privechat/app/utils/constants.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'package:privechat/app/data/models/usuario_model.dart';
@@ -72,12 +74,33 @@ class ChatController extends GetxController {
     }
   }
 
+  revisar(bool value) async{
+    
+    if(await repository.revisar(usuarioPara.uid!, value)){
+      usuarioPara.revisado = value;
+      socket.emit('revisa-usuario',{'uid':usuarioPara.uid});
+      update();
+    }
+  }
+
+  NetworkImage retImgProfile(){
+    try {
+      return usuarioPara.imgProfile!.isNotEmpty
+              ?NetworkImage(URL_IMAGE + usuarioPara.imgProfile!)
+              :const NetworkImage('https://www.pinclipart.com/picdir/middle/84-841840_svg-royalty-free-library-icon-svg-profile-profile.png');
+    }on NetworkImageLoadException catch (e) {
+      print('Error: '+e.toString());
+      return const NetworkImage('https://www.pinclipart.com/picdir/middle/84-841840_svg-royalty-free-library-icon-svg-profile-profile.png');
+    }
+  }
+
   
 
   _init() async{
     
     //await getchat();
   }
+
 
   @override
   void onReady() {

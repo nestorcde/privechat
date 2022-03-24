@@ -14,3 +14,31 @@ Future dialogoTurno(String titulo, String content, bool conFuncion, String boton
                               ],
                             )
                           );
+
+Future dialogoOtro(TextEditingController controller, String horario, Rx<DateTime> diaEnfocado, Function funcion) =>Get.dialog(
+      AlertDialog(
+        title:  Text('Registro'),
+        content: Text('Ingrese el nombre de la persona a la que desea agendar'),
+        actions: [
+          TextField(controller: controller,),
+          TextButton(onPressed: (){
+            if(controller.text.isNotEmpty){
+              funcion(diaEnfocado.value,horario,controller.text); 
+              Get.back();
+            }else{
+              Get.snackbar('Falta Nombre', 'Ingrese nombre de la persona a la que agendaar');
+            }
+          }, child:  Text('OK'))
+        ],
+      )
+    );
+
+Future dialogoTuto(String titulo, String content, String boton, Function funcion) =>Get.dialog(
+  AlertDialog(
+    title:  Text(titulo),
+    content: Text(content),
+    actions: [
+      TextButton(onPressed: (){funcion(); Get.back();}, child:  Text(boton))
+    ],
+  )
+);
