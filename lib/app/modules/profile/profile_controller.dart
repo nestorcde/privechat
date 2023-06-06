@@ -91,7 +91,7 @@ class ProfileController extends GetxController {
       usuarioObs = authProvider.usuario.obs;
       final pickedFile = await ImagePicker().pickImage(source: imageSource);
       //File file = convertToFile(pickedFile!);
-      File? file = await ImageCropper.cropImage(
+      File? file = await ImageCropper().cropImage(
         sourcePath: pickedFile!.path,
         aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
         cropStyle: CropStyle.circle,
