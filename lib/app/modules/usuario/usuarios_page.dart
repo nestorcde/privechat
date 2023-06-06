@@ -1,5 +1,5 @@
 
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as bdg;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:privechat/app/data/models/usuario_model.dart';
@@ -117,10 +117,10 @@ class _UsuariosPageState extends State<UsuariosPage> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             usuario.noLeidos! > 0
-                ? Badge(
+                ? bdg.Badge(
                     elevation: 0,
                     badgeColor: Colors.grey,
-                    shape: BadgeShape.circle,
+                    shape: bdg.BadgeShape.circle,
                     padding: const EdgeInsets.all(7),
                     badgeContent: Text(
                       usuario.noLeidos!.toString(),
