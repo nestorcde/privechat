@@ -1,7 +1,6 @@
 //import 'dart:io';
 import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:http/http.dart';
 
 import 'package:privechat/app/data/provider/local/local_auth.dart';
@@ -27,9 +26,9 @@ import 'package:privechat/app/modules/chat/chat_provider.dart';
 import 'package:privechat/app/modules/chat/chat_repository.dart';
 
 class DependencyInjection {
-  static Future<void> init() async{
+  static Future<void> init() async {
     //Varios
-    Get.put<FlutterSecureStorage>(FlutterSecureStorage());
+    Get.put<FlutterSecureStorage>(const FlutterSecureStorage());
     Get.put<Client>(Client());
 
     //Providers
@@ -40,7 +39,7 @@ class DependencyInjection {
     Get.put<UsuarioProvider>(UsuarioProvider());
     Get.put<AgendaProvider>(AgendaProvider());
     Get.put<ProfileProvider>(ProfileProvider());
-    
+
     //Repositories
     Get.put<LocalAuthRepository>(LocalAuthRepository());
     Get.put<AuthRepository>(AuthRepository());
@@ -59,6 +58,5 @@ class DependencyInjection {
     Get.put<LandingController>(LandingController());
     Get.put<ProfileController>(ProfileController());
     Get.put<ProfileController>(ProfileController());
-
   }
 }

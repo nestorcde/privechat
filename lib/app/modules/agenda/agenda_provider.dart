@@ -42,6 +42,7 @@ class AgendaProvider {
         "hora": hora,
         "nombre": nombre
       };
+      print(data);
       final resp = await http.post(Environment().apiUrl('/turnos/nuevo'),
         body: jsonEncode(data),
         headers: {
@@ -49,7 +50,7 @@ class AgendaProvider {
           'x-token': token.toString()
         }
       );
-
+      print(resp.body);
       final respuesta = generalResponseFromJson(resp.body);
       return respuesta.msg;
     } catch (e) {
@@ -94,6 +95,7 @@ class AgendaProvider {
           'x-token': token.toString()
         }
       );
+      print(resp.body);
       return generalResponseFromJson(resp.body);
     } catch (e) {
       return GeneralResponse(ok: false, msg: 'Error al verificar', conn: false, fecha: DateTime.now(), propio: false);

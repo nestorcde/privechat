@@ -5,7 +5,6 @@ import 'dart:collection';
 
 import 'package:table_calendar/table_calendar.dart';
 
-import 'constants.dart';
 
 /// Example event class.
 class Event {

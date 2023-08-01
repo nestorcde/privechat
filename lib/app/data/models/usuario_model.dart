@@ -4,7 +4,6 @@
 
 import 'dart:io';
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 import 'package:privechat/app/utils/constants.dart';
@@ -12,7 +11,7 @@ import 'package:privechat/app/utils/constants.dart';
 final url = Platform.isAndroid
         ? Constants.SOCKET_BASE_URL_ANDROID_LOCAL
         : Constants.SOCKET_BASE_URL_IOS_LOCAL;
-    final imagen = url + '/uploads/blank-profile-picture.png';
+    final imagen = '$url/uploads/blank-profile-picture.png';
 
 Usuario usuarioFromJson(String str) => Usuario.fromJson(json.decode(str));
 

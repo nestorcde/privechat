@@ -10,8 +10,8 @@ import 'package:privechat/app/routes/routes_app.dart';
 import 'package:privechat/app/utils/constants.dart';
 
 PreferredSizeWidget customAppBar(String nombre){
-  UsuarioController _usuarioController = Get.find<UsuarioController>();
-  SocketProvider _socketProvider = Get.find<SocketProvider>();
+  UsuarioController usuarioController = Get.find<UsuarioController>();
+  SocketProvider socketProvider = Get.find<SocketProvider>();
   return AppBar(
               title: Text(
                 nombre,
@@ -22,8 +22,8 @@ PreferredSizeWidget customAppBar(String nombre){
               backgroundColor: Colors.white,
               leading: IconButton(
                   onPressed: () async {
-                    _usuarioController.disconnect();
-                    await _usuarioController.deleteToken();
+                    usuarioController.disconnect();
+                    await usuarioController.deleteToken();
                     Get.offNamed(Routes.LOGIN);
                   },
                   color: Colors.black87,
@@ -31,7 +31,7 @@ PreferredSizeWidget customAppBar(String nombre){
               actions: [
                  Container(
                       margin: const EdgeInsets.only(right: 10),
-                      child: Obx(() => _socketProvider.serverStatus.value == ServerStatus.Online
+                      child: Obx(() => socketProvider.serverStatus.value == ServerStatus.Online
                           ? Icon(
                               Icons.check_circle,
                               color: Colors.blue[400],

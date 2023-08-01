@@ -18,13 +18,15 @@ class BotonAzul extends StatelessWidget {
     final height = Get.size.height;
     return ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: Colors.blue,
+              backgroundColor: Colors.blue,
               elevation: 2,
               shape: const StadiumBorder()
             ),
             onPressed: autenticando ?? false ? null : () => funcion(), 
             
             child: SizedBox(
+              width: double.infinity,
+              height: height * 0.08,
               child: Center(
                 child: Text(
                     texto,
@@ -34,8 +36,6 @@ class BotonAzul extends StatelessWidget {
                     ),
                   )
               ),
-              width: double.infinity,
-              height: height * 0.08,
             ));
   }
 }

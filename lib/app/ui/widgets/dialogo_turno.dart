@@ -17,8 +17,8 @@ Future dialogoTurno(String titulo, String content, bool conFuncion, String boton
 
 Future dialogoOtro(TextEditingController controller, String horario, Rx<DateTime> diaEnfocado, Function funcion) =>Get.dialog(
       AlertDialog(
-        title:  Text('Registro'),
-        content: Text('Ingrese el nombre de la persona a la que desea agendar'),
+        title:  const Text('Registro'),
+        content: const Text('Ingrese el nombre de la persona a la que desea agendar'),
         actions: [
           TextField(controller: controller,),
           TextButton(onPressed: (){
@@ -28,7 +28,7 @@ Future dialogoOtro(TextEditingController controller, String horario, Rx<DateTime
             }else{
               Get.snackbar('Falta Nombre', 'Ingrese nombre de la persona a la que agendaar');
             }
-          }, child:  Text('OK'))
+          }, child:  const Text('OK'))
         ],
       )
     );

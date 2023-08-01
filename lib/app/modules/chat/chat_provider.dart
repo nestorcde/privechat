@@ -20,7 +20,7 @@ class ChatProvider extends GetConnect {
   Future<List<Mensaje>> getChat(String usuarioId) async{
     try {
       final token = await _storage.read(key: 'token');
-      final resp = await http.get(Environment().apiUrl('/mensajes/'+usuarioId),
+      final resp = await http.get(Environment().apiUrl('/mensajes/$usuarioId'),
         headers: {
           'Content-Type': 'application/json',
           'x-token': token.toString()

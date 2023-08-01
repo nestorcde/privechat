@@ -2,7 +2,6 @@
 //
 //     final eventResponse = eventResponseFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 import 'event_model.dart';

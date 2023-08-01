@@ -47,15 +47,15 @@ class UsuarioController extends GetxController {
         try {
           image = NetworkImage(URL_IMAGE + usuario.imgProfile!);
         } catch (e) {
-          print('Error: '+e.toString());
-          image = NetworkImage('https://www.pinclipart.com/picdir/middle/84-841840_svg-royalty-free-library-icon-svg-profile-profile.png');
+          print('Error: $e');
+          image = const NetworkImage('https://www.pinclipart.com/picdir/middle/84-841840_svg-royalty-free-library-icon-svg-profile-profile.png');
         }
       }else{
-        image = NetworkImage('https://www.pinclipart.com/picdir/middle/84-841840_svg-royalty-free-library-icon-svg-profile-profile.png');
+        image = const NetworkImage('https://www.pinclipart.com/picdir/middle/84-841840_svg-royalty-free-library-icon-svg-profile-profile.png');
       }
       return image;
     }catch (e) {
-      print('Error: '+e.toString());
+      print('Error: $e');
       return const NetworkImage('https://www.pinclipart.com/picdir/middle/84-841840_svg-royalty-free-library-icon-svg-profile-profile.png');
     }
   }

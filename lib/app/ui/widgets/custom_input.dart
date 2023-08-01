@@ -50,7 +50,8 @@ class CustomInput extends StatelessWidget {
           prefixIcon: Icon(icon),
           focusedBorder: InputBorder.none,
           border: InputBorder.none,
-          hintText: placeholder
+          hintText: placeholder,
+          labelText: placeholder
         ),
         onChanged:(value) {
           onChanged!(value);

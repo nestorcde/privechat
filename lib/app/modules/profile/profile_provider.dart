@@ -1,16 +1,12 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:dio/dio.dart';
-import 'package:flutter/services.dart';
 import 'package:http_parser/http_parser.dart';
-import 'package:path/path.dart';
 import 'dart:convert';
 import 'dart:io';
-import 'package:get_storage/get_storage.dart';
 import 'package:async/async.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:privechat/app/data/models/login_response.dart';
 import 'package:privechat/app/data/models/updateProfile_response.dart';
 import 'package:privechat/app/data/models/usuario_model.dart';
 import 'package:privechat/app/data/provider/remote/auth_provider.dart';
@@ -60,7 +56,7 @@ class ProfileProvider extends GetConnect {
       });
 
       dio.Response response = await Dio().post(
-        URL_STRING + '/profile/imageProfile',
+        '$URL_STRING/profile/imageProfile',
         data: formData,
         
         options: dio.Options(

@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:get/get.dart';
 import 'package:privechat/app/modules/loading/loading_controller.dart';
 import 'package:privechat/app/modules/register/register_controller.dart';
@@ -74,9 +73,6 @@ class __FormState extends State<_Form> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  @override
-  // TODO: implement widget
-  _Form get widget => super.widget;
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,5 @@
 //import 'package:chat_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 
 import 'package:privechat/app/modules/chat/chat_controller.dart';
@@ -84,7 +83,12 @@ class _ChatMessageState extends State<ChatMessage> with TickerProviderStateMixin
 
   Widget _miMessage() {
     return Align(
+      alignment: Alignment.centerRight,
       child: Container(
+        padding: const EdgeInsets.all(8),
+        margin: const EdgeInsets.only(bottom: 5, left: 50, right: 5),
+        decoration: BoxDecoration(
+            color: Colors.blueAccent, borderRadius: BorderRadius.circular(20)),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.end,
@@ -103,29 +107,24 @@ class _ChatMessageState extends State<ChatMessage> with TickerProviderStateMixin
              MessageStatusDot(status: widget.status.value,)
           ],
         ),
-        padding: const EdgeInsets.all(8),
-        margin: const EdgeInsets.only(bottom: 5, left: 50, right: 5),
-        decoration: BoxDecoration(
-            color: Colors.blueAccent, borderRadius: BorderRadius.circular(20)),
       ),
-      alignment: Alignment.centerRight,
     );
   }
 
   Widget notMyMessage(ChatController chatController) {
     chatController.socket.emit('mensaje-leido-sale', {"uid": widget.msgUid, "deUid": widget.uid, "paraUid": chatController.usuario.uid});
     return Align(
+      alignment: Alignment.centerLeft,
       child: Container(
-        child: Text(
-          widget.texto,
-          style: const TextStyle(color: Colors.white),
-        ),
         padding: const EdgeInsets.all(8),
         margin: const EdgeInsets.only(bottom: 5, left: 5, right: 50),
         decoration: BoxDecoration(
             color: Colors.grey, borderRadius: BorderRadius.circular(20)),
+        child: Text(
+          widget.texto,
+          style: const TextStyle(color: Colors.white),
+        ),
       ),
-      alignment: Alignment.centerLeft,
     );
   }
 

@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:get/get.dart';
 import 'package:privechat/app/modules/login/login_controller.dart';
 import 'package:privechat/app/ui/widgets/boton_azul.dart';
@@ -79,9 +78,6 @@ class Form extends StatefulWidget {
 class _FormState extends State<Form> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  @override
-  // TODO: implement widget
-  Form get widget => super.widget;
 
   @override
   Widget build(BuildContext context) {

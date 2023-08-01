@@ -1,5 +1,4 @@
-
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as bdg;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:privechat/app/data/models/usuario_model.dart';
@@ -46,7 +45,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
     return GetBuilder<UsuarioController>(
       builder: (_) {
         _socketProvider = Get.find<SocketProvider>();
-        
+
         return Scaffold(
             appBar: customAppBar('Contacto'),
             body: SmartRefresher(
@@ -64,7 +63,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
                   _refreshController.refreshCompleted();
                 },
                 child: //_listViewUsuarios(_)
-                Obx(() {
+                    Obx(() {
                   if (_socketProvider.usuarioConectado.value) {
                     //_.cargarUsuarios();
                     return _listViewUsuarios(_);
@@ -72,27 +71,27 @@ class _UsuariosPageState extends State<UsuariosPage> {
                     //_.cargarUsuarios();
                     return _listViewUsuarios(_);
                   }
-                }
-                )
-              )
-            );
+                })));
       },
     );
   }
 
   ListView _listViewUsuarios(UsuarioController usuarioController) {
     //usuarioController.cargarUsuarios();
-    if(!usuarioController.usuario.tutorial! && indicador == 1){
+    if (!usuarioController.usuario.tutorial! && indicador == 1) {
       indicador = 0;
-      Future.delayed(Duration.zero, () =>  dialogoTuto(
-        'Bienvenid@',
-        'Para poder empezar a agendar tus turnos, debes completar tu perfil con tu foto, y solicitar a la administradora que acepte tu solicitud', 
-        'OK', usuarioController.setTuto));
+      Future.delayed(
+          Duration.zero,
+          () => dialogoTuto(
+              'Bienvenid@',
+              'Para poder empezar a agendar tus turnos, debes completar tu perfil con tu foto, y solicitar a la administradora que acepte tu solicitud',
+              'OK',
+              usuarioController.setTuto));
     }
     return ListView.separated(
         physics: const BouncingScrollPhysics(),
-        itemBuilder: (_, i) =>
-            _usuariosTile(usuarioController.usuarios.value[i], usuarioController),
+        itemBuilder: (_, i) => _usuariosTile(
+            usuarioController.usuarios.value[i], usuarioController),
         separatorBuilder: (_, i) => const Divider(),
         itemCount: usuarioController.usuarios.value.length);
   }
@@ -100,27 +99,29 @@ class _UsuariosPageState extends State<UsuariosPage> {
   ListTile _usuariosTile(Usuario usuario, UsuarioController usuarioController) {
     NetworkImage image = usuarioController.retImgProfile(usuario);
     return ListTile(
-      tileColor: usuario.revisado!?Colors.white:Colors.grey,
+      tileColor: usuario.revisado! ? Colors.white : Colors.grey,
       title: Text(usuario.nombre!),
       subtitle: Text(usuario.email!),
       leading: CircleAvatar(
-        child: image==null?
-        const SizedBox():
-        const Icon(Icons.account_circle, size: 40, color: Colors.grey,),
-        backgroundColor: Colors.blue[100] ,
-        backgroundImage: image
-        
-      ),
+          backgroundColor: Colors.blue[100],
+          backgroundImage: image,
+          child: image == null
+              ? const Icon(
+                  Icons.account_circle,
+                  size: 40,
+                  color: Colors.grey,
+                )
+              : const SizedBox()),
       trailing: SizedBox(
         width: 100,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             usuario.noLeidos! > 0
-                ? Badge(
+                ? bdg.Badge(
                     elevation: 0,
                     badgeColor: Colors.grey,
-                    shape: BadgeShape.circle,
+                    shape: bdg.BadgeShape.circle,
                     padding: const EdgeInsets.all(7),
                     badgeContent: Text(
                       usuario.noLeidos!.toString(),

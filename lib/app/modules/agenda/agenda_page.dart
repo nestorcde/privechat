@@ -1,7 +1,6 @@
 // Copyright 2019 Aleksander Woźniak
 // SPDX-License-Identifier: Apache-2.0
 
-import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:privechat/app/data/models/event_model.dart';
@@ -232,7 +231,7 @@ class _AgendaPageState extends State<AgendaPage> {
                                 dialogoOtro(nombreCtrl, horarios[index], agendaController.diaEnfocado, agendaController.verificarTurno)
                               : 
                                 dialogoTurno('Registro de Turno', 
-                                  'Desea Registrar turno el $dia/${mes<10?'0'+mes.toString():mes}/$anho a las ${horarios[index]}?', 
+                                  'Desea Registrar turno el $dia/${mes<10?'0$mes':mes}/$anho a las ${horarios[index]}?', 
                                   true, 
                                   'Registrar', 
                                   ()=>agendaController.verificarTurno(agendaController.diaSeleccionado.value, horarios[index], ''));
@@ -249,7 +248,7 @@ class _AgendaPageState extends State<AgendaPage> {
                                     ],
                                   )
                                 :
-                                  Text('${horarios[index]}'),
+                                  Text(horarios[index]),
                       ),
                     );
                   },

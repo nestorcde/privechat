@@ -11,6 +11,8 @@ class ProfilePage extends GetView<ProfileController> {
   final UsuarioController _usuarioController = Get.find<UsuarioController>();
   final width = Get.size.width;
 
+  ProfilePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     //const imagen = '';
@@ -47,6 +49,9 @@ class ProfilePage extends GetView<ProfileController> {
                     Positioned(
                         right: width * 0.02,
                         child: Container(
+                          decoration: BoxDecoration(
+                              color: const Color.fromRGBO(211, 211, 211, 0.5),
+                              borderRadius: BorderRadius.circular(100)),
                           child: IconButton(
                               onPressed: () {
                                 Get.bottomSheet(
@@ -86,9 +91,6 @@ class ProfilePage extends GetView<ProfileController> {
                                 );
                               },
                               icon: const Icon(Icons.edit)),
-                          decoration: BoxDecoration(
-                              color: const Color.fromRGBO(211, 211, 211, 0.5),
-                              borderRadius: BorderRadius.circular(100)),
                         ))
                   ],
                 ),

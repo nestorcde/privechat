@@ -12,22 +12,19 @@ import 'dart:collection';
 import 'package:privechat/app/modules/agenda/agenda_repository.dart';
 
 class AgendaController extends GetxController {
-
   //final AgendaRepository repository = Get.find<AgendaRepository>();
   late final AgendaRepository repository;
-  
+
   final AuthRepository authRepository = Get.find<AuthRepository>();
   final SocketRepository socketRepository = Get.find<SocketRepository>();
   RxList<Event> selectedEvents = <Event>[].obs;
 
-  
-  
   IO.Socket get socket => socketRepository.socket;
 
   Function get emit => socketRepository.emit;
 
   late Map<DateTime, List<Event>> kEventSource;
-  final Rx<LinkedHashMap<DateTime, List<Event>>>  kEvents = LinkedHashMap<DateTime, List<Event>>().obs;
+  final RxMap<DateTime, List<Event>> kEvents = <DateTime, List<Event>>{}.obs;
   final DateTime kToday = DateTime.now();
   late DateTime kFirstDay;
   late DateTime kLastDay;
@@ -38,7 +35,7 @@ class AgendaController extends GetxController {
 
   //var diaEnfocado;
 
-  void setDiaSeleccionado(DateTime nvoDia){
+  void setDiaSeleccionado(DateTime nvoDia) {
     diaSeleccionado.value = nvoDia;
     diaEnfocado.value = nvoDia;
     update();
@@ -46,59 +43,68 @@ class AgendaController extends GetxController {
 
   Usuario get usuario => authRepository.usuario;
 
-  void nuevoTurno(data){
-    if(data['uid']!=usuario.uid){
+  void nuevoTurno(data) {
+    if (data['uid'] != usuario.uid) {
       cargaEventos();
     }
   }
-  
-  void cargaEventos()  {
-    repository.getTurnos().then((value){
+
+  void cargaEventos() {
+    repository.getTurnos().then((value) {
       kEventSource = value;
-      value.forEach((key, value) { print(value); });
+      value.forEach((key, value) {
+        print(value);
+      });
       kEvents.value = LinkedHashMap<DateTime, List<Event>>(
-      equals: isSameDay,
-      hashCode: getHashCode,
-      )..addAll(kEventSource);      
+        equals: isSameDay,
+        hashCode: getHashCode,
+      )..addAll(kEventSource);
       update();
     });
-    
   }
+
   Future<Map<DateTime, List<Event>>> getTurnos() => repository.getTurnos();
 
   void registrarTurno(DateTime fecha, String hora, String nombre) async {
-     final respuesta = await repository.registrarTurnos(fecha, hora, nombre);
-     cargaEventos();
-     socket.emit('registra-turno',{"fecha": diaEnfocado.value.toIso8601String(), "uid": usuario.uid});
-     Get.snackbar('Registrar Turno', respuesta);
+    final respuesta = await repository.registrarTurnos(fecha, hora, nombre);
+    cargaEventos();
+    socket.emit('registra-turno',
+        {"fecha": diaEnfocado.value.toIso8601String(), "uid": usuario.uid});
+    Get.snackbar('Registrar Turno', respuesta);
   }
 
   void eliminarTurno(String id) async {
     final respuesta = await repository.eliminarTurnos(id);
     cargaEventos();
-    socket.emit('registra-turno',{"fecha": diaEnfocado.value.toIso8601String(), "uid": usuario.uid});
+    socket.emit('registra-turno',
+        {"fecha": diaEnfocado.value.toIso8601String(), "uid": usuario.uid});
     Get.snackbar('Eliminar Turno', respuesta);
   }
 
   void verificarTurno(DateTime fecha, String hora, String nombre) async {
-     final respuesta = await repository.verificarTurno(fecha, hora);
-     if(respuesta.ok){
-       registrarTurno(fecha, hora, '');
-     }else{
-       if(respuesta.conn){
-         if(respuesta.propio){
-            final dia = respuesta.fecha.day;
-            final mes = respuesta.fecha.month;
-            final anho = respuesta.fecha.year;
-            dialogoTurno(respuesta.msg, 'Tiene un turno en fecha $dia/${mes<10?'0'+mes.toString():mes}/$anho', true, 'Ir a Fecha', () => setDiaSeleccionado(respuesta.fecha));
-          }else{
-            Get.snackbar('Registrar Turno', respuesta.msg);
-            cargaEventos();
-          }
-       }else{
-         Get.snackbar('Registrar Turno', respuesta.msg);
-       }
-     }
+    final respuesta = await repository.verificarTurno(fecha, hora);
+    if (respuesta.ok) {
+      registrarTurno(fecha, hora, nombre);
+    } else {
+      if (respuesta.conn) {
+        if (respuesta.propio) {
+          final dia = respuesta.fecha.day;
+          final mes = respuesta.fecha.month;
+          final anho = respuesta.fecha.year;
+          dialogoTurno(
+              respuesta.msg,
+              'Tiene un turno en fecha $dia/${mes < 10 ? '0$mes' : mes}/$anho',
+              true,
+              'Ir a Fecha',
+              () => setDiaSeleccionado(respuesta.fecha));
+        } else {
+          Get.snackbar('Registrar Turno', respuesta.msg);
+          cargaEventos();
+        }
+      } else {
+        Get.snackbar('Registrar Turno', respuesta.msg);
+      }
+    }
   }
 
   @override
@@ -123,7 +129,7 @@ class AgendaController extends GetxController {
     );
   }
 
-  void registrarOtro(String horario) async{
+  void registrarOtro(String horario) async {
     TextEditingController controller = TextEditingController();
     await dialogoOtro(controller, horario, diaEnfocado, verificarTurno);
     //  await Get.dialog(
@@ -134,7 +140,7 @@ class AgendaController extends GetxController {
     //       TextField(controller: controller,),
     //       TextButton(onPressed: (){
     //         if(controller.text.isNotEmpty){
-    //           registrarTurno(diaEnfocado.value,horario,controller.text); 
+    //           registrarTurno(diaEnfocado.value,horario,controller.text);
     //           Get.back();
     //         }else{
     //           Get.snackbar('Falta Nombre', 'Ingrese nombre de la persona a la que agendaar');
@@ -144,9 +150,4 @@ class AgendaController extends GetxController {
     //   )
     // );
   }
-
-
-  
-
-  
 }

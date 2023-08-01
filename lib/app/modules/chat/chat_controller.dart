@@ -89,7 +89,7 @@ class ChatController extends GetxController {
               ?NetworkImage(URL_IMAGE + usuarioPara.imgProfile!)
               :const NetworkImage('https://www.pinclipart.com/picdir/middle/84-841840_svg-royalty-free-library-icon-svg-profile-profile.png');
     }on NetworkImageLoadException catch (e) {
-      print('Error: '+e.toString());
+      print('Error: $e');
       return const NetworkImage('https://www.pinclipart.com/picdir/middle/84-841840_svg-royalty-free-library-icon-svg-profile-profile.png');
     }
   }
